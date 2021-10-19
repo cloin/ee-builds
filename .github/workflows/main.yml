@@ -1,4 +1,4 @@
-name: ServiceNow EE build
+name: Build a new SNOW EE
 
 # Controls when the workflow will run
 on:
@@ -11,8 +11,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 env:
-  EE_NAME: snow12-ee
-  EE_FOLDER: servicenow-ee
   REGISTRY_USER: ${{ secrets.REDHAT_USERNAME }}
   REGISTRY_PASS: ${{ secrets.REDHAT_PASSWORD }}
   
@@ -46,10 +44,10 @@ jobs:
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
-         image: ${{ env.EE_NAME }}
+         image: snow12-ee
          tags: latest ${{ github.sha }}
          containerfiles: |
-           ./${{ env.EE_FOLDER }}/Containerfile
+           ./Containerfile
            
       - name: Push To quay.io
         id: push-to-quay
