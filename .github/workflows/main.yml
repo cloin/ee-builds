@@ -20,11 +20,41 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
+    
+      - name: checkout repo
+        uses: actions/checkout@v2
 
       - name: Log in to quay.io
+        id: registry-quay
         uses: redhat-actions/podman-login@v1
         with:
           registry: quay.io
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASS }}
 
+      - name: Log in to registry.redhat.io
+        id: registry-redhat
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: registry.redhat.io
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASS }}
+
+      - name: Build image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+         image: snow12-ee
+         tags: latest ${{ github.sha }}
+         containerfiles: |
+           ./Containerfile
+           
+#       - name: Push To quay.io
+#         id: push-to-quay
+#         uses: redhat-actions/push-to-registry@v2
+#         with:
+#           image: ${{ steps.build-image.outputs.image }}
+#           tags: ${{ steps.build-image.outputs.tags }}
+#           registry: quay.io/quay-user
+#           username: quay-user
+#           password: ${{ secrets.REGISTRY_PASSWORD }} 
