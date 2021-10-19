@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: EE build
+name: Build a new EE
 
 # Controls when the workflow will run
 on:
@@ -16,10 +16,12 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  login:
-    name: Log in to image registry
+  build:
     runs-on: ubuntu-20.04
     steps:
+    
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Log in to quay.io
         uses: redhat-actions/podman-login@v1
