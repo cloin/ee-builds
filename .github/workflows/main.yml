@@ -12,10 +12,6 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-env:
-  REGISTRY_USER: ${{ secrets.REDHAT_USERNAME }}
-  REGISTRY_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -28,14 +24,14 @@ jobs:
       - name: Log in to quay.io
         uses: redhat-actions/podman-login@v1
         with:
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
           registry: quay.io
         
       - name: Log in to redhat.registry.io
         uses: redhat-actions/podman-login@v1
         with:
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
           registry: redhat.registry.io
 
