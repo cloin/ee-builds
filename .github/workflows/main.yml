@@ -29,5 +29,5 @@ jobs:
         with:
           registry: quay.io
           username: ${{ env.REGISTRY_USER }}
-          password: ${{ eng.REGISTRY_PASS }}
+          password: ${{ env.REGISTRY_PASS }}
 
