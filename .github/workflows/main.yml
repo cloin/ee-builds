@@ -20,8 +20,8 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-    
-      - name: checkout repo
+      # In this job, all steps begin with a name
+      - name: Checkout repo
         uses: actions/checkout@v2
 
       - name: Log in to quay.io
@@ -55,7 +55,7 @@ jobs:
         with:
           image: ${{ steps.build-image.outputs.image }}
           tags: ${{ steps.build-image.outputs.tags }}
-          registry: quay.io/repository/acme_corp/
+          registry: quay.io/acme_corp/
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASS }} 
 
