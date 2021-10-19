@@ -1,4 +1,4 @@
-name: Build a new SNOW EE
+name: ServiceNow EE build
 
 # Controls when the workflow will run
 on:
