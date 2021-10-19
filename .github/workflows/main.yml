@@ -47,7 +47,7 @@ jobs:
          image: snow12-ee
          tags: latest ${{ github.sha }}
          containerfiles: |
-           ./Containerfile
+           ./context/Containerfile
            
 #       - name: Push To quay.io
 #         id: push-to-quay
