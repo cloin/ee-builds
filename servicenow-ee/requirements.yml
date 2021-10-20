@@ -1,0 +1,5 @@
+---
+collections:
+  - ansible.windows
+  - community.windows
+  - servicenow.itsm
