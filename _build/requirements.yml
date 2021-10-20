@@ -4,3 +4,4 @@ collections:
   - community.windows
   - ansible.utils
   - ansible.posix
+  - servicenow.itsm
