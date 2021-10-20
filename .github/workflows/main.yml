@@ -25,16 +25,16 @@ jobs:
         uses: redhat-actions/podman-login@v1
         with:
           registry: quay.io
-          username: ${{ env.REDHAT_USERNAME }}
-          password: ${{ env.REDHAT_PASSWORD }}
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
 
       - name: Log in to registry.redhat.io
         id: registry-redhat
         uses: redhat-actions/podman-login@v1
         with:
           registry: registry.redhat.io
-          username: ${{ env.REDHAT_USERNAME }}
-          password: ${{ env.REDHAT_PASSWORD }}
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
 
       - name: Build image
         id: build-image
@@ -52,8 +52,8 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
           tags: ${{ steps.build-image.outputs.tags }}
           registry: quay.io/acme_corp/
-          username: ${{ env.REDHAT_USERNAME }}
-          password: ${{ env.REDHAT_PASSWORD }} 
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }} 
 
       - name: Print image url
         run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
