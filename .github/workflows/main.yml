@@ -8,6 +8,9 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+  env:
+    EE_FOLDER: servicenow-ee
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -36,24 +39,28 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
 
+      # - name: Build image
+      #   id: build-image
+      #   uses: redhat-actions/buildah-build@v2
+      #   with:
+      #    image: snow12-ee
+      #    tags: latest ${{ github.sha }}
+      #    containerfiles: |
+      #      ./Containerfile
+
       - name: Build image
         id: build-image
-        uses: redhat-actions/buildah-build@v2
-        with:
-         image: snow12-ee
-         tags: latest ${{ github.sha }}
-         containerfiles: |
-           ./Containerfile
+        run: cd ${{ env.EE_FOLDER }} && ansible-builder build --tag=servicenow-ee:latest
            
-      - name: Push To quay.io
-        id: push-to-quay
-        uses: redhat-actions/push-to-registry@v2
-        with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ steps.build-image.outputs.tags }}
-          registry: quay.io/acme_corp/
-          username: ${{ secrets.REDHAT_USERNAME }}
-          password: ${{ secrets.REDHAT_PASSWORD }} 
+      # - name: Push To quay.io
+      #   id: push-to-quay
+      #   uses: redhat-actions/push-to-registry@v2
+      #   with:
+      #     image: ${{ steps.build-image.outputs.image }}
+      #     tags: ${{ steps.build-image.outputs.tags }}
+      #     registry: quay.io/acme_corp/
+      #     username: ${{ secrets.REDHAT_USERNAME }}
+      #     password: ${{ secrets.REDHAT_PASSWORD }} 
 
-      - name: Print image url
-        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+      # - name: Print image url
+      #   run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
