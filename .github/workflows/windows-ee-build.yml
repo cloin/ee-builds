@@ -1,0 +1,74 @@
+# Workflow name
+name: Windows EE build
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the main branch
+  push:
+    branches: [ main ]
+  paths:
+    - 'windows-ee/**'
+
+  # Schedules the workflow At 00:00 on Sunday
+  schedule:
+    - cron: '0 0 * * 0'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  EE_FOLDER_NAME: windows-ee
+  EE_IMAGE_TAG: latest
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    environment: deploy
+    steps:
+
+      # In this job, all steps begin with a name
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        
+      - name: Install python requirements (ansible-builder)
+        run: pip install -r requirements.txt
+
+      - name: Log in to quay.io
+        id: registry-quay
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: quay.io
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
+
+      - name: Log in to registry.redhat.io
+        id: registry-redhat
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: registry.redhat.io
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
+
+      - name: Build image
+        id: build-image
+        run: |
+          cd ${{ env.EE_FOLDER_NAME }}
+          ansible-builder build \
+          --tag=${{ env.EE_FOLDER_NAME }}:${{ env.EE_IMAGE_TAG }}
+           
+      - name: Push To quay.io
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ env.EE_FOLDER_NAME }}
+          tags: |
+            ${{ env.EE_IMAGE_TAG }}
+          registry: quay.io/acme_corp/
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }} 
+
+      - name: Print image url
+        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
