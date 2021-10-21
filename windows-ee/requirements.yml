@@ -4,4 +4,3 @@ collections:
   - community.windows
   - ansible.utils
   - ansible.posix
-  - ansible.controller
