@@ -1,5 +1,4 @@
 ---
 collections:
-  - ansible.windows
-  - community.windows
-  - servicenow.itsm
+  - ansible.utils
+  - ansible.posix
