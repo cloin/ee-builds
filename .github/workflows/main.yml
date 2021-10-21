@@ -56,7 +56,8 @@ jobs:
         id: build-image
         run: |
           cd ${{ env.EE_FOLDER_NAME }}
-          ansible-builder build --tag=${{ env.EE_FOLDER_NAME }}
+          ansible-builder build \
+          --tag=${{ env.EE_FOLDER_NAME }}
            
       - name: Push To quay.io
         id: push-to-quay
