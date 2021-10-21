@@ -2,7 +2,7 @@ name: ServiceNow EE build
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push  events but only for the main branch
 #   push:
 #     branches: [ main ]
 
@@ -15,17 +15,19 @@ env:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+
   # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest
     environment: deploy
     steps:
+
       # In this job, all steps begin with a name
       - name: Checkout repo
         uses: actions/checkout@v2
         
       - name: Install python requirements (ansible-builder)
-        uses: logikal-code/pip-install@v1.0.0
+        run: pip install -r requirements.txt
 
       - name: Log in to quay.io
         id: registry-quay
@@ -42,15 +44,6 @@ jobs:
           registry: registry.redhat.io
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
-
-      # - name: Build image
-      #   id: build-image
-      #   uses: redhat-actions/buildah-build@v2
-      #   with:
-      #    image: snow12-ee
-      #    tags: latest ${{ github.sha }}
-      #    containerfiles: |
-      #      ./Containerfile
 
       - name: Build image
         id: build-image
