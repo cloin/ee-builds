@@ -1,3 +1,7 @@
 ---
 collections:
+  - ansible.windows
   - community.windows
+  - ansible.utils
+  - ansible.posix
+  - ansible.controller
