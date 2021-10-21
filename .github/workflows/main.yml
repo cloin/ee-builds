@@ -56,7 +56,8 @@ jobs:
         id: build-image
         run: |
           cd ${{ env.EE_FOLDER_NAME }}
-          ansible-builder build 
+          ansible-builder build
+          --tag=${{ env.EE_FOLDER_NAME }}
            
       - name: Push To quay.io
         id: push-to-quay
@@ -64,7 +65,7 @@ jobs:
         with:
           image: ${{ env.EE_FOLDER_NAME }}
           tags: |
-            ${{ env.EE_FOLDER_NAME }}
+            latest
             ${{ github.sha }}
           registry: quay.io/acme_corp/
           username: ${{ secrets.REDHAT_USERNAME }}
