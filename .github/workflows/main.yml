@@ -10,8 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  EE_FOLDER: servicenow-ee
-  EE_NAME: ${{ env.EE_FOLDER }}
+  EE_FOLDER_NAME: servicenow-ee
   EE_IMAGE_TAG: latest
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -56,17 +55,17 @@ jobs:
       - name: Build image
         id: build-image
         run: |
-          cd ${{ env.EE_FOLDER }}
+          cd ${{ env.EE_FOLDER_NAME }}
           ansible-builder build 
-          --tag=servicenow-ee:latest 
-          --tag=servicenow-ee:${{ github.sha }}
            
       - name: Push To quay.io
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ env.EE_NAME }}
-          tags: ${{ env.EE_IMAGE_TAG }}
+          image: ${{ env.EE_FOLDER_NAME }}
+          tags: |
+            ${{ env.EE_FOLDER_NAME }}
+            ${{ github.sha }}
           registry: quay.io/acme_corp/
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }} 
