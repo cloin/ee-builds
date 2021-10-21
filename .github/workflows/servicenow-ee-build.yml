@@ -5,9 +5,10 @@ name: ServiceNow EE build
 on:
   # Triggers the workflow on push events but only for the main branch
   push:
-    branches: [ main ]
-  paths:
-    - 'servicenow-ee/**'
+    branches:
+      - main
+    paths:
+      - 'servicenow-ee/**'
 
   # Schedules the workflow At 00:00 on Sunday
   schedule:
