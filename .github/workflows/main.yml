@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Install python requirements (ansible-builder)
-        uses: logikal-code/pip-install@v1
+        uses: logikal-code/pip-install@v1.0.0
 
       - name: Log in to quay.io
         id: registry-quay
