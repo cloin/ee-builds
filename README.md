@@ -1,4 +1,4 @@
-# ee-builds
+# Build execution environments with `ansible-builder`
 ## This repo responds to modifications on `main` by building a new container image with Github Actions to be used as an execution environment for Ansible Automation Platform 2.
 
 
