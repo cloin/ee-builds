@@ -10,6 +10,10 @@ on:
     paths:
       - 'servicenow-ee/**'
 
+  # Schedule workflow run at 00:00 on Sunday
+  schedule:
+    - cron: '0 0 * * 0'
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
