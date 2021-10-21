@@ -22,6 +22,9 @@ jobs:
       # In this job, all steps begin with a name
       - name: Checkout repo
         uses: actions/checkout@v2
+        
+      - name: Install python requirements (ansible-builder)
+        uses: logikal-code/pip-install@v1
 
       - name: Log in to quay.io
         id: registry-quay
