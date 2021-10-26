@@ -1,5 +1,5 @@
 # Workflow name
-name: Windows EE build
+name: EE build
 
 # Controls when the workflow will run
 on:
