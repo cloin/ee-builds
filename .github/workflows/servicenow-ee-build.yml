@@ -31,8 +31,8 @@ jobs:
     with:
       EE_FOLDER_NAME: 'servicenow-ee'
       EE_IMAGE_TAG: 'latest'
-      REDHAT_USERNAME: ${{ secrets.REDHAT_USERNAME }}
-      REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
+      REDHAT_USERNAME: ${{ env.REDHAT_USERNAME }}
+      REDHAT_PASSWORD: ${{ env.REDHAT_PASSWORD }}
 
   # # This workflow contains a single job called "build"
   # build:
