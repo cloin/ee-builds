@@ -12,14 +12,20 @@ on:
         required: true
         type: string
       EE_IMAGE_TAG:
-        description: 'tag for image build'
+        description: 'just one tag for image build'
         default: 'latest'
+        required: true
+        type: string
+      QUAY_USER:
+        description: 'this is used during the image push to quay'
         required: true
         type: string
     secrets:
       REDHAT_PASSWORD:
+        description: 'needed for registry login'
         required: false
       REDHAT_USERNAME:
+        description: 'needed for registry login'
         required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -68,7 +74,7 @@ jobs:
           image: ${{ inputs.EE_FOLDER_NAME }}
           tags: |
             ${{ inputs.EE_IMAGE_TAG }}
-          registry: quay.io/acme_corp/
+          registry: ${{ inputs.QUAY_USER }}
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }} 
 
