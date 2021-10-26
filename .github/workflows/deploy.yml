@@ -18,7 +18,10 @@ on:
         type: string
     secrets:
       REDHAT_PASSWORD:
+        required: false
       REDHAT_USERNAME:
+        required: false
+
 
 
   
