@@ -16,11 +16,11 @@ on:
         default: 'latest'
         required: true
         type: string
-    secrets:
-      REDHAT_USERNAME:
-        required: true
-      REDHAT_PASSWORD:
-        required: true
+    # secrets:
+    #   REDHAT_USERNAME:
+    #     required: true
+    #   REDHAT_PASSWORD:
+    #     required: true
 
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
