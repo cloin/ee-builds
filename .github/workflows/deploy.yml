@@ -16,6 +16,9 @@ on:
         default: 'latest'
         required: true
         type: string
+    secrets:
+      REDHAT_PASSWORD: ''
+      REDHAT_USERNAME: ''
 
 
   
