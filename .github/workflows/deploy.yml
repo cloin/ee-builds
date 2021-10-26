@@ -58,17 +58,17 @@ jobs:
       - name: Build image
         id: build-image
         run: |
-          cd ${{ env.EE_FOLDER_NAME }}
+          cd ${{ inputs.EE_FOLDER_NAME }}
           ansible-builder build \
-          --tag=${{ env.EE_FOLDER_NAME }}:${{ env.EE_IMAGE_TAG }}
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
            
       - name: Push To quay.io
         id: push-to-quay
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ env.EE_FOLDER_NAME }}
+          image: ${{ inputs.EE_FOLDER_NAME }}
           tags: |
-            ${{ env.EE_IMAGE_TAG }}
+            ${{ inputs.EE_IMAGE_TAG }}
           registry: quay.io/acme_corp/
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }} 
