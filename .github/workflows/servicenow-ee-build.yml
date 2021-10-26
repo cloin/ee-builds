@@ -26,10 +26,13 @@ jobs:
   call-deploy-workflow:
     runs-on: ubuntu-latest
     environment: deploy
-    uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
-    with:
-      EE_FOLDER_NAME: 'servicenow-ee'
-      EE_IMAGE_TAG: 'latest'
+
+    steps:
+      - name: call deploy
+        uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
+        with:
+          EE_FOLDER_NAME: 'servicenow-ee'
+          EE_IMAGE_TAG: 'latest'
 
   # # This workflow contains a single job called "build"
   # build:
