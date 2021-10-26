@@ -24,15 +24,12 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   call-deploy-workflow:
-    runs-on: ubuntu-latest
-    environment: deploy
-
-    steps:
-      - name: call deploy
-        uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
-        with:
-          EE_FOLDER_NAME: 'servicenow-ee'
-          EE_IMAGE_TAG: 'latest'
+    uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
+    with:
+      EE_FOLDER_NAME: 'servicenow-ee'
+      EE_IMAGE_TAG: 'latest'
+      REDHAT_USERNAME: ${{ secrets.REDHAT_USERNAME }}
+      REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
 
   # # This workflow contains a single job called "build"
   # build:
