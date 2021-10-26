@@ -28,8 +28,8 @@ jobs:
 
   # This workflow contains a single job called "build"
   build:
-    runs-on: ubuntu-latest
-    environment: deploy
+    # runs-on: ubuntu-latest
+    # environment: deploy
     steps:
 
       # In this job, all steps begin with a name
