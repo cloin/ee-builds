@@ -20,9 +20,7 @@ on:
 # env:
 #   EE_FOLDER_NAME: servicenow-ee
 #   EE_IMAGE_TAG: latest
-env:
-  REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
-  REDHAT_USERNAME: ${{ secrets.REDHAT_USERNAME }}
+env: ${{ secrets }}
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,8 +29,9 @@ jobs:
     with:
       EE_FOLDER_NAME: 'servicenow-ee'
       EE_IMAGE_TAG: 'latest'
-      REDHAT_USERNAME: ${{ env.REDHAT_USERNAME }}
-      REDHAT_PASSWORD: ${{ env.REDHAT_PASSWORD }}
+    secrets:
+      REDHAT_USERNAME: ${{ secrets.REDHAT_USERNAME }}
+      REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
 
   # # This workflow contains a single job called "build"
   # build:
