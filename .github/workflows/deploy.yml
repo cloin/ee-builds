@@ -17,8 +17,8 @@ on:
         required: true
         type: string
     secrets:
-      REDHAT_PASSWORD: ''
-      REDHAT_USERNAME: ''
+      REDHAT_PASSWORD:
+      REDHAT_USERNAME:
 
 
   
