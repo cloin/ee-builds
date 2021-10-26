@@ -17,17 +17,17 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  EE_FOLDER_NAME: servicenow-ee
-  EE_IMAGE_TAG: latest
+# env:
+#   EE_FOLDER_NAME: servicenow-ee
+#   EE_IMAGE_TAG: latest
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   call-deploy-workflow:
     uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
     with:
-      EE_FOLDER_NAME: ${{ env.EE_FOLDER_NAME }}
-      EE_IMAGE_TAG: ${{ env.EE_IMAGE_TAG }}
+      EE_FOLDER_NAME: 'servicenow-ee'
+      EE_IMAGE_TAG: 'latest'
 
   # # This workflow contains a single job called "build"
   # build:
