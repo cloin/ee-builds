@@ -24,6 +24,3 @@ jobs:
     with:
       EE_FOLDER_NAME: 'servicenow-ee'
       EE_IMAGE_TAG: 'latest'
-    secrets:
-      REDHAT_USERNAME: ${{ secrets.REDHAT_USERNAME }}
-      REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
