@@ -24,7 +24,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   call-deploy-workflow:
-    uses: $GITHUB_REPOSITORY/.github/workflows/deploy.yml
+    uses: $GITHUB_REPOSITORY/.github/workflows/deploy.yml@main
     with:
       EE_FOLDER_NAME: ${{ env.EE_FOLDER_NAME }}
       EE_IMAGE_TAG: ${{ env.EE_IMAGE_TAG }}
