@@ -25,6 +25,7 @@ on:
 jobs:
   call-deploy-workflow:
     uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
+    environment: deploy
     with:
       EE_FOLDER_NAME: 'servicenow-ee'
       EE_IMAGE_TAG: 'latest'
