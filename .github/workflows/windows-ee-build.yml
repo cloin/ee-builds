@@ -1,5 +1,5 @@
 # Workflow name
-name: ServiceNow EE build
+name: Windows EE build
 
 # Controls when the workflow will run
 on:
