@@ -7,7 +7,7 @@ on:
   workflow_call:
     inputs:
       EE_FOLDER_NAME:
-        description: 'Name of the folder where the EE is located'
+        description: 'name of the folder where the EE is located (will become the name of the EE)'
         default: ''
         required: true
         type: string
@@ -16,11 +16,6 @@ on:
         default: 'latest'
         required: true
         type: string
-    # secrets:
-    #   REDHAT_USERNAME:
-    #     required: true
-    #   REDHAT_PASSWORD:
-    #     required: true
 
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -28,8 +23,8 @@ jobs:
 
   # This workflow contains a single job called "build"
   build:
-    # runs-on: ubuntu-latest
-    # environment: deploy
+    runs-on: ubuntu-latest
+    environment: deploy
     steps:
 
       # In this job, all steps begin with a name
