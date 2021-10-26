@@ -2,4 +2,3 @@
 collections:
   - ansible.utils
   - ansible.posix
-  - servicenow.itsm
