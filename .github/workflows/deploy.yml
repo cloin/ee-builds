@@ -62,8 +62,8 @@ jobs:
 
       - name: Build image
         id: build-image
+        working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
-          cd ${{ inputs.EE_FOLDER_NAME }}
           ansible-builder build \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
            
