@@ -2,9 +2,10 @@ name: caller workflow
 on:
   workflow_dispatch:
 
+env:
+  test: 'this is just a test'
+
 jobs:
-  env:
-    test: ' this is just a test'
   call-workflow:
     uses: cloin/ee-builds/.github/workflows/test-workflow.yml@main
     with:
