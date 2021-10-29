@@ -9,5 +9,5 @@ jobs:
   call-workflow:
     uses: cloin/ee-builds/.github/workflows/test-workflow.yml@main
     with:
-      test: ${{ env.test }}
+      test: 'this is not ideal'
   

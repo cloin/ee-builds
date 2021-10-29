@@ -5,6 +5,7 @@ on:
       test:
         description: 'just a test'
         type: string
+        required: false
 
 jobs:
 
@@ -12,6 +13,5 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-
       - name: dump input `test`
         run: echo ${{ inputs.test }}
