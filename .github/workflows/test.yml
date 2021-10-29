@@ -1,0 +1,12 @@
+on:
+  workflow_dispatch:
+
+  env:
+    test: 'this is just a test'
+
+jobs:
+  call-workflow:
+    uses: cloin/ee-builds/.github/workflows/test-workflow.yml@main
+    with:
+      test: ${{ env.test }}
+  
