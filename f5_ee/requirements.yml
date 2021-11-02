@@ -1,0 +1,4 @@
+---
+collections:
+  - f5networks.f5_modules
+  - community.general
