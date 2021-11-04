@@ -1,6 +1,0 @@
-ipaddress; python_version < '3.5'
-cryptography
-objectpath
-ordereddict
-simplejson
-jmespath # for json_query plugin in community.general
