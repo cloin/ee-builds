@@ -1,5 +1,5 @@
 # Workflow name
-name: EE build
+name: EE build (reusable)
 
 # Controls when the workflow will run
 on:
