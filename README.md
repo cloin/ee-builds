@@ -2,7 +2,7 @@
 ## Building execution environment images for use in [ansible workshops](https://github.com/ansible/workshops)
 ### This repo responds to modifications on `main` by building a new container image with Github Actions to be used as an execution environment for Ansible Automation Platform 2.
 
-[![ServiceNow EE build](https://github.com/cloin/ee-builds/actions/workflows/servicenow-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/servicenow-ee-build.yml) [![Windows EE build](https://github.com/cloin/ee-builds/actions/workflows/windows-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/windows-ee-build.yml) [![f5 EE build](https://github.com/cloin/ee-builds/actions/workflows/f5-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/f5-ee-build.yml)
+[![ServiceNow EE build](https://github.com/cloin/ee-builds/actions/workflows/servicenow-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/servicenow-ee-build.yml) [![Windows EE build](https://github.com/cloin/ee-builds/actions/workflows/windows-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/windows-ee-build.yml) [![f5 EE build](https://github.com/cloin/ee-builds/actions/workflows/f5-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/f5-ee-build.yml) [![RHEL 90 min EE build](https://github.com/cloin/ee-builds/actions/workflows/rhel_90-ee.yml/badge.svg?branch=main)](https://github.com/cloin/ee-builds/actions/workflows/rhel_90-ee.yml)
 
 ![workflow](https://user-images.githubusercontent.com/8515817/140567781-616a7507-607e-41af-b668-4d3850776dc9.png)
 
