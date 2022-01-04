@@ -4,3 +4,4 @@ objectpath
 ordereddict
 simplejson
 jmespath # for json_query plugin in community.general
+lxml
