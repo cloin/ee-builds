@@ -13,3 +13,4 @@ dependencies:
 additional_build_steps:
   prepend: |
     RUN pip3 install --upgrade pip setuptools
+    RUN echo $AH_TOKEN
