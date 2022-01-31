@@ -71,6 +71,8 @@ jobs:
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
         env:
           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
+          ANSIBLE_GALAXY_CLI_COLLECTION_OPTS: |
+            -vvv
            
       - name: Push To quay.io
         id: push-to-quay
