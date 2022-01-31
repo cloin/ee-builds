@@ -27,6 +27,9 @@ on:
       REDHAT_USERNAME:
         description: 'needed for registry login'
         required: false
+      AH_TOKEN:
+        description: 'API token for hosted automation hub'
+        required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
