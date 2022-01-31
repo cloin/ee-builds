@@ -63,12 +63,6 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
           
-      - name: check token
-        working-directory: ${{ inputs.EE_FOLDER_NAME }}
-        run: |
-          curl https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token -d grant_type=refresh_token -d client_id="colin_m" -d refresh_token=$TOKEN --fail --silent --show-error --output /dev/null
-        env:
-          TOKEN: ${{ secrets.AH_TOKEN }}
 
       - name: Build image
         id: build-image
