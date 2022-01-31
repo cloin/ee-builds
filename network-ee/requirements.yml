@@ -1,0 +1,16 @@
+---
+collections:
+  - ansible.utils
+  - ansible.posix
+  - servicenow.itsm
+  - ansible.controller
+  - ansible.netcommon
+  - ansible.network
+  - arista.eos
+  - cisco.asa
+  - cisco.ios
+  - cisco.iosxr
+  - cisco.nxos
+  - frr.frr
+  - junipernetworks.junos
+  - vyos.vyos
