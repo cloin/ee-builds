@@ -69,6 +69,8 @@ jobs:
         run: |
           ansible-builder build \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
+        env:
+          AH_TOKEN: ${{ secrets.AH_TOKEN }}
            
       - name: Push To quay.io
         id: push-to-quay
