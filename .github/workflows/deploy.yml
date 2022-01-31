@@ -74,7 +74,7 @@ jobs:
         id: build-image
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
-          ansible-builder build \
+          ansible-builder -vvv build \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
         env:
           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
