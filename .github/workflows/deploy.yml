@@ -31,6 +31,9 @@ on:
       AH_TOKEN:
         description: 'API token for hosted automation hub'
         required: false
+      
+env:
+  ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
