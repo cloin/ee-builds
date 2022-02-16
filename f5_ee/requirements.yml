@@ -1,4 +1,7 @@
 ---
 collections:
   - f5networks.f5_modules
+  - f5networks.f5_bigip
+  - ansible.posix
+  - community.docker
   - community.general
