@@ -11,3 +11,5 @@ dependencies:
 additional_build_steps:
   prepend: |
     RUN pip3 install --upgrade pip setuptools
+  append: |
+    RUN ansible-galaxy collection list
