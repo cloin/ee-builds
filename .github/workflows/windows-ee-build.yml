@@ -22,7 +22,7 @@ jobs:
   call-deploy-workflow:
     uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
     with:
-      EE_FOLDER_NAME: 'windows-ee'
+      EE_FOLDER_NAME: 'windows_ee'
       EE_IMAGE_TAG: 'latest'
       QUAY_USER: 'acme_corp'
     secrets:
