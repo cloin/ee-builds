@@ -2,4 +2,6 @@
 collections:
   - ansible.utils
   - ansible.posix
+  - awx.awx
+  - ansible.netcommon
   - servicenow.itsm
