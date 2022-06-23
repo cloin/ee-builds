@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - 'rhel_90-ee/**'
+      - 'rhel_90_ee/**'
 
   # Schedule workflow run at 00:00 on Sunday
   schedule:
@@ -22,7 +22,7 @@ jobs:
   call-deploy-workflow:
     uses:  cloin/ee-builds/.github/workflows/deploy.yml@main
     with:
-      EE_FOLDER_NAME: 'rhel_90-ee'
+      EE_FOLDER_NAME: 'rhel_90_ee'
       EE_IMAGE_TAG: 'latest'
       QUAY_USER: 'acme_corp'
     secrets:

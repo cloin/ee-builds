@@ -1,0 +1,9 @@
+---
+version: 1
+
+build_arg_defaults:
+  EE_BASE_IMAGE: 'registry.redhat.io/ansible-automation-platform-21/ee-supported-rhel8'
+
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
