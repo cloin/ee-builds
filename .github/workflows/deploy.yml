@@ -67,6 +67,12 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
           
+      - name: substitute token for automation hub
+        id: ah-token
+        run: |
+          cat ansible.cfg
+          sed 's/my_ah_token/{{ secrets.AH_TOKEN }}/1' ansible.cfg
+          cat ansible.cfg
 
       - name: Build image
         id: build-image
