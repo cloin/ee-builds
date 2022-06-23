@@ -16,7 +16,6 @@ cryptography
 decorator
 docutils
 dogpile.cache
-gssapi
 humanfriendly
 idna
 ipaddress
