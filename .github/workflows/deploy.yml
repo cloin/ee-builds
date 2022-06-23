@@ -71,8 +71,10 @@ jobs:
         id: ah-token
         run: |
           cat ansible.cfg
-          sed -i 's/my_ah_token/${{ secrets.AH_TOKEN }}/1' ansible.cfg
+          sed -i "s/my_ah_token/$TOKEN/1" ansible.cfg
           cat ansible.cfg
+        env:
+          AH_TOKEN: ${{ secrets.AH_TOKEN }}
 
       - name: Build image
         id: build-image
