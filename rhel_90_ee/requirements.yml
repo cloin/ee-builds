@@ -2,3 +2,4 @@
 collections:
   - ansible.utils
   - community.general
+  - redhat.rhel_system_roles
