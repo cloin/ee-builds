@@ -1,16 +1,24 @@
 ---
 collections:
-  - ansible.utils
-  - ansible.posix
-  - servicenow.itsm
-  - ansible.controller
-  - ansible.netcommon
-  - ansible.network
-  - arista.eos
-  - cisco.asa
-  - cisco.ios
-  - cisco.iosxr
-  - cisco.nxos
-  - frr.frr
-  - junipernetworks.junos
-  - vyos.vyos
+  - name: amazon.aws
+  - name: ansible.netcommon
+  - name: ansible.network
+  - name: ansible.posix
+  - name: ansible.security
+  - name: ansible.utils
+  - name: arista.eos
+  - name: cisco.asa
+  - name: cisco.ios
+  - name: cisco.iosxr
+  - name: cisco.nxos
+  - name: cloud.common
+  - name: frr.frr
+  - name: ibm.qradar
+  - name: junipernetworks.junos
+  - name: kubernetes.core
+  - name: openvswitch.openvswitch
+  - name: servicenow.itsm
+  - name: splunk.es
+  - name: trendmicro.deepsec
+  - name: vmware.vmware_rest
+  - name: vyos.vyos
