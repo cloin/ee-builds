@@ -5,3 +5,4 @@ collections:
   - awx.awx
   - ansible.netcommon
   - servicenow.itsm
+  - benthomasson.eda
