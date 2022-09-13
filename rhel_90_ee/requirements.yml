@@ -5,3 +5,4 @@ collections:
   - redhat.rhel_system_roles
 roles:
   - linux-system-roles.firewall
+  - redhatinsights.insights-client
