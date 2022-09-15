@@ -32,8 +32,8 @@ on:
         description: 'API token for hosted automation hub'
         required: false
       
-env:
-  ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
+# env:
+#   ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -81,8 +81,8 @@ jobs:
         run: |
           ansible-builder build \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
-        env:
-          ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
+#         env:
+#           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
            
       - name: Push To quay.io
         id: push-to-quay
