@@ -105,6 +105,6 @@ jobs:
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "## Usage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-path }}" >> $GITHUB_STEP_SUMMARY
+          echo "Image pushed to [${{ steps.push-to-quay.outputs.registry-path }}](https://${{ steps.push-to-quay.outputs.registry-path }})" >> $GITHUB_STEP_SUMMARY
           echo ":rocket: \`podman pull ${{ steps.push-to-quay.outputs.registry-path }}\`" >> $GITHUB_STEP_SUMMARY
 
