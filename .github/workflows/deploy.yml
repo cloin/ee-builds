@@ -92,6 +92,7 @@ jobs:
           image: ${{ inputs.EE_FOLDER_NAME }}
           tags: |
             ${{ inputs.EE_IMAGE_TAG }}
+            ${{ github.sha }}
           registry: quay.io/${{ inputs.QUAY_USER }}/
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }} 
