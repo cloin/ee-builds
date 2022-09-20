@@ -1,1 +1,1 @@
-ansible-builder==1.0.1
+ansible-builder
