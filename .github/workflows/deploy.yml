@@ -95,15 +95,15 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }} 
         
-      - name: Summary
+      - name: Print summary
         run: |
           echo "## Installed collections:" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "```" >> $GITHUB_STEP_SUMMARY
-          podman run ${{ inputs.EE_FOLDER_NAME }} ansible-galaxy collection list >> $GITHUB_STEP_SUMMARY
+          echo "`podman run ${{ inputs.EE_FOLDER_NAME }} ansible-galaxy collection list`" >> $GITHUB_STEP_SUMMARY
           echo "```" >> $GITHUB_STEP_SUMMARY
           echo "## Usage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-path }}" >> $GITHUB_STEP_SUMMARY
-          echo ":rocket: `podman pull ${{ steps.push-to-quay.outputs.registry-path }}`"
+          echo ":rocket: `podman pull ${{ steps.push-to-quay.outputs.registry-path }}`" >> $GITHUB_STEP_SUMMARY
 
