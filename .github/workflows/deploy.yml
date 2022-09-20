@@ -81,6 +81,7 @@ jobs:
         run: |
           ansible-builder build \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
 #         env:
 #           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
            
