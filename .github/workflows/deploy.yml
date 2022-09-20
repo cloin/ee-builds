@@ -99,9 +99,9 @@ jobs:
         run: |
           echo "## Installed collections:" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "```" >> $GITHUB_STEP_SUMMARY
-          echo "$(podman run ${{ inputs.EE_FOLDER_NAME }} ansible-galaxy collection list)" >> $GITHUB_STEP_SUMMARY
-          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "`podman run ${{ inputs.EE_FOLDER_NAME }} ansible-galaxy collection list`" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "## Usage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-path }}" >> $GITHUB_STEP_SUMMARY
