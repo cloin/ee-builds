@@ -3,5 +3,7 @@ collections:
   - ansible.utils
   - community.general
   - redhat.rhel_system_roles
+  - redhat.insights
 roles:
   - linux-system-roles.firewall
+  - redhatinsights.insights-client
