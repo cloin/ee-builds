@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - 'windows-ee/**'
+      - 'windows_ee/**'
 
   # Schedule workflow run at 00:00 on Sunday
   schedule:
