@@ -103,6 +103,11 @@ jobs:
           echo "Image pushed to repository: [${{ steps.push-to-quay.outputs.registry-path }}](https://${{ steps.push-to-quay.outputs.registry-path }})" >> $GITHUB_STEP_SUMMARY
           echo "> \`podman pull ${{ steps.push-to-quay.outputs.registry-path }}\`" >> $GITHUB_STEP_SUMMARY
           echo "> \`podman pull quay.io/${{ inputs.QUAY_USER }}/${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "## :pushpin: Ansible info:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "`podman run ${{ inputs.EE_FOLDER_NAME }} ansible --version`" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "## :pushpin: Installed collections:" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
