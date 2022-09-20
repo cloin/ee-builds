@@ -104,7 +104,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Image pushed to [${{ steps.push-to-quay.outputs.registry-path }}](https://${{ steps.push-to-quay.outputs.registry-path }})" >> $GITHUB_STEP_SUMMARY
           echo "\`podman pull ${{ steps.push-to-quay.outputs.registry-path }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "\`podman pull ${{ steps.push-to-quay.outputs.registry-path }} | cut -d: -f1`:${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`podman pull ${{ steps.push-to-quay.outputs.registry-path }} | cut -d: -f1\`:${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "## Installed collections:" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
