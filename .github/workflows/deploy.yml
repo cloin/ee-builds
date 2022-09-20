@@ -96,7 +96,7 @@ jobs:
           password: ${{ secrets.REDHAT_PASSWORD }} 
 
       - name: Print image url
-        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+        run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}" >> $GITHUB_STEP_SUMMARY
         
       - name: List installed collections
-        run: podman run ${{ inputs.EE_FOLDER_NAME }} ansible-galaxy collection list
+        run: echo "Installed collections:\n`podman run ${{ inputs.EE_FOLDER_NAME }} ansible-galaxy collection list` >> $GITHUB_STEP_SUMMARY
