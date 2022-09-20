@@ -97,6 +97,7 @@ jobs:
           password: ${{ secrets.REDHAT_PASSWORD }} 
         
       - name: Print summary
+        working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           echo "## Installed collections:" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -107,4 +108,8 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Image pushed to [${{ steps.push-to-quay.outputs.registry-path }}](https://${{ steps.push-to-quay.outputs.registry-path }})" >> $GITHUB_STEP_SUMMARY
           echo ":rocket: \`podman pull ${{ steps.push-to-quay.outputs.registry-path }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "## Containerfile:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "`cat context/Containerfile`" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
