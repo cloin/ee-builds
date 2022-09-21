@@ -84,12 +84,12 @@ jobs:
 #           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
 # Above env var doesn't work yet: https://github.com/ansible/ansible-builder/issues/346
 
-      - name: Add latest tag
-        id: latest-tag
-        run: |
-          podman tag \
-          ${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \
-          ${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
+#       - name: Add latest tag
+#         id: latest-tag
+#         run: |
+#           podman tag \
+#           ${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \
+#           ${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
            
       - name: Push To quay.io
         id: push-to-quay
@@ -97,8 +97,8 @@ jobs:
         with:
           image: ${{ inputs.EE_FOLDER_NAME }}
           tags: |
-            ${{ inputs.EE_IMAGE_TAG }}
             ${{ github.sha }}
+#            ${{ inputs.EE_IMAGE_TAG }}
           registry: quay.io/${{ inputs.QUAY_USER }}/
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }} 
