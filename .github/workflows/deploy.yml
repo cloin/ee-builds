@@ -77,19 +77,11 @@ jobs:
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           ansible-builder build \
-            --build-arg quay_expiration=40d \
-            --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
-#          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
+            --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \
+            --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
 #         env:
 #           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
 # Above env var doesn't work yet: https://github.com/ansible/ansible-builder/issues/346
-
-      - name: Add latest tag
-        id: latest-tag
-        run: |
-          podman tag \
-          ${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \
-          ${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
            
       - name: Push To quay.io
         id: push-to-quay
