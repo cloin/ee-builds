@@ -7,7 +7,7 @@
 ![workflow](https://user-images.githubusercontent.com/8515817/140567781-616a7507-607e-41af-b668-4d3850776dc9.png)
 
 ### Contributions
-The directories in this repository should follow the format that `ansible-builder` expects. See [servicenow-ee](https://github.com/cloin/ee-builds/tree/main/servicenow-ee) as an example. The name you give the directory should also be the name of the image. `ansible-builder` only accepts one tag at the moment, and the default is set to latest. You can also copy the [servicenow-ee workflow](https://github.com/cloin/ee-builds/blob/main/.github/workflows/servicenow-ee-build.yml) file and adjust the parameters on lines 2 and 25-27. Questions? Open an issue!
+The directories in this repository should follow the format that `ansible-builder` expects. See [servicenow-ee](https://github.com/cloin/ee-builds/tree/main/servicenow-ee) as an example. The name you give the directory should also be the name of the image. You can also copy the [servicenow-ee workflow](https://github.com/cloin/ee-builds/blob/main/.github/workflows/servicenow-ee-build.yml) file and adjust the parameters on lines 2 and 25-27. Questions? Open an issue!
 
 
 ### Useful documentation and links
