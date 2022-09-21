@@ -77,7 +77,7 @@ jobs:
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           ansible-builder build \
-            --build-arg quay.expires-after=40d \
+            --build-arg quay_expiration=40d \
             --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
 #          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
 #         env:
