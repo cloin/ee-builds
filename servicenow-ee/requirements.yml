@@ -5,4 +5,7 @@ collections:
   - ansible.posix
   - awx.awx
   - ansible.netcommon
-  - servicenow.itsm
+  - name: servicenow.itsm
+    version: 1.4.0
+  - name: servicenow.itsm
+    version: 2.0.0
