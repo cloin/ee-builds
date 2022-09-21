@@ -77,8 +77,8 @@ jobs:
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           ansible-builder build \
-            --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \
-            --build-arg quay.expires-after=40d
+            --build-arg quay.expires-after=40d \
+            --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
 #          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
 #         env:
 #           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
