@@ -77,8 +77,8 @@ jobs:
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           ansible-builder build \
-            --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \
-            --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
 #         env:
 #           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
 # Above env var doesn't work yet: https://github.com/ansible/ansible-builder/issues/346
@@ -89,8 +89,8 @@ jobs:
         with:
           image: ${{ inputs.EE_FOLDER_NAME }}
           tags: |
-            ${{ github.sha }}
             ${{ inputs.EE_IMAGE_TAG }}
+            ${{ github.sha }}
           registry: quay.io/${{ inputs.QUAY_USER }}/
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }} 
