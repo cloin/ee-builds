@@ -14,5 +14,4 @@ additional_build_steps:
   prepend: |
     RUN pip3 install --upgrade pip setuptools
   append: |
-    ARG quay_expiration=never
-    LABEL quay.expires-after=${quay_expiration}
+    LABEL quay.expires-after="45d"
