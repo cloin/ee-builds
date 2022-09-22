@@ -68,7 +68,6 @@ jobs:
         id: ah-token
         run: |
           sed -i "s/my_ah_token/$AH_TOKEN/1" ansible.cfg
-          cat ansible.cfg
         env:
           AH_TOKEN: ${{ secrets.AH_TOKEN }}
 
