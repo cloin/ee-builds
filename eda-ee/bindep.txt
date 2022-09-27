@@ -1,4 +1,5 @@
 gcc 
 python38
 python38-devel
+python39-devel
 nodejs
