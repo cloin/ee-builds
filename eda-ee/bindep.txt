@@ -1,3 +1,2 @@
 gcc 
-python3-devel
-python38-devel
+python39-devel
