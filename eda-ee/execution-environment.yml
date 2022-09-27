@@ -14,7 +14,9 @@ dependencies:
 additional_build_steps:
   prepend: |
     RUN pip3 install --upgrade pip setuptools
-    ADD ../playbooks /runner/project
+    RUN ls -la
+    RUN ls -la ..
+    ADD playbooks /runner/project
     WORKDIR /runner/project
   append: |
     LABEL quay.expires-after="45d"
