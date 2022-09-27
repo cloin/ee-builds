@@ -15,6 +15,6 @@ additional_build_steps:
   prepend: |
     RUN pip3 install --upgrade pip setuptools
     ADD ../playbooks /runner/project
-    WORKDIR /project
+    WORKDIR /runner/project
   append: |
     LABEL quay.expires-after="45d"
