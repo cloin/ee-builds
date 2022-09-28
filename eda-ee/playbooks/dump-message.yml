@@ -9,11 +9,13 @@
         var: event
 
     - name: collect some info
-      ansible.builtin.cmd: ps aux
+      ansible.builtin.comand: 
+        cmd: ps aux
       register: ps
 
     - name: check dns 
-      ansible.builtin.cmd: dig localhost
+      ansible.builtin.command: 
+        cmd: dig localhost
       register: dig
 
     - name: summary
