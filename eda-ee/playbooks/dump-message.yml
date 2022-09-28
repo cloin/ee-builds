@@ -23,3 +23,16 @@
         msg:
         - "Running tasks: {{ ps }}"
         - "DNS check: {{ ping }}"
+
+    - name: Create incident
+      servicenow.itsm.incident:
+        instance:
+        state: new
+        caller: admin
+        short_description: "{{ event.severity }} - {{ event.message }}"
+        description: |
+          "JHB kiosk application is unreachable."
+          "{{ ps }}"
+          "{{ ping }}"
+        impact: low
+        urgency: low
