@@ -9,7 +9,7 @@
         var: event
 
     - name: collect some info
-      ansible.builtin.comand: 
+      ansible.builtin.command: 
         cmd: ps aux
       register: ps
 
