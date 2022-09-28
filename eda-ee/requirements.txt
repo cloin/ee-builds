@@ -17,5 +17,5 @@ redis==4.1.4
 virtualenv==20.13.4
 ansible-builder==1.0.1
 ansible-events==0.7.0
-aiohttp
-aiokafka
+aiohttp==3.8.1
+aiokafka==0.7.2
