@@ -22,4 +22,4 @@
       ansible.builtin.debug:
         msg:
         - "Running tasks: {{ ps }}"
-        - "DNS check: {{ dig }}"
+        - "DNS check: {{ ping }}"
