@@ -1,6 +1,6 @@
 ---
 - name: Troubleshoot
-  hosts: localhost
+  hosts: rhel
   gather_facts: false
 
   tasks:
@@ -10,16 +10,16 @@
 
     - name: collect some info
       ansible.builtin.command: 
-        cmd: ps aux
+        cmd: ps aux | grep docker
       register: ps
 
     - name: check dns 
       ansible.builtin.command: 
-        cmd: dig localhost
-      register: dig
+        cmd: ping -c 5 rhel 
+      register: ping
 
     - name: summary
       ansible.builtin.debug:
         msg:
-        - "Running tasks {{ ps }}"
-        - "DNS check {{ dig }}"
+        - "Running tasks: {{ ps }}"
+        - "DNS check: {{ dig }}"
