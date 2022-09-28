@@ -1,0 +1,23 @@
+---
+- name: Troubleshoot
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: dump message
+      ansible.builtin.debug:
+        var: event
+
+    - name: collect some info
+      ansible.builtin.cmd: ps aux
+      register: ps
+
+    - name: check dns 
+      ansible.builtin.cmd: dig localhost
+      register: dig
+
+    - name: summary
+      ansible.builtin.debug:
+        msg:
+        - "Running tasks {{ ps }}"
+        - "DNS check {{ dig }}"
