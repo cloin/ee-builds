@@ -1,7 +1,7 @@
 ---
 - name: Troubleshoot
   hosts: rhel
-  gather_facts: false
+  gather_facts: true
 
   tasks:
     - name: dump message
@@ -9,12 +9,12 @@
         var: event
 
     - name: collect some info
-      ansible.builtin.command: 
+      ansible.builtin.shell: 
         cmd: ps aux | grep docker
       register: ps
 
     - name: check dns 
-      ansible.builtin.command: 
+      ansible.builtin.shell: 
         cmd: ping -c 5 rhel 
       register: ping
 
