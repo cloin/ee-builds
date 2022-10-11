@@ -3,3 +3,4 @@ collections:
   - name: servicenow.itsm
   - name: amazon.aws
   - name: awx.awx
+  - name: amazon.cloud
