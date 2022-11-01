@@ -9,7 +9,11 @@ dependencies:
   galaxy: requirements.yml
   python: requirements.txt
 
-  
+
 additional_build_steps:
   append:
-    - sudo yum install -y https://s3.us-east-1.amazonaws.com/amazon-ssm-us-east-1/latest/linux_amd64/amazon-ssm-agent.rpm
+    - RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/awscliv2.zip"
+    - RUN unzip /awscliv2.zip -d /aws
+    - RUN /aws/aws/install
+    - RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "session-manager-plugin.rpm"
+    - RUN yum install -y session-manager-plugin.rpm
