@@ -4,3 +4,4 @@ collections:
   - name: amazon.aws
   - name: awx.awx
   - name: amazon.cloud
+  - name: community.aws
