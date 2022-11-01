@@ -8,3 +8,8 @@ build_arg_defaults:
 dependencies:
   galaxy: requirements.yml
   python: requirements.txt
+
+  
+additional_build_steps:
+  append:
+    - sudo yum install -y https://s3.us-east-1.amazonaws.com/amazon-ssm-us-east-1/latest/linux_amd64/amazon-ssm-agent.rpm
