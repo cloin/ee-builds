@@ -1,5 +1,5 @@
 ---
 collections:
   - community.general
-  - benthomasson.eda  # 1.3.0
+  - ansible.eda
   - servicenow.itsm
