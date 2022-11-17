@@ -26,3 +26,11 @@ collections:
   #satellite
   - name: redhat.satellite
     version: 3.7.0
+  #network
+  - name: cisco.ios
+    version: 3.1.0
+  - name: cisco.nxos
+    version: 3.0.0
+  - name: cisco.iosxr
+    version: 3.1.0
+  
