@@ -1,5 +1,0 @@
-unzip
-pysnow
-requests
-netaddr
-boto3
