@@ -7,8 +7,8 @@ build_arg_defaults:
 ansible_config: '../ansible.cfg'
 
 dependencies:
-  galaxy: requirements.yml
-  python: requirements.txt
+  galaxy: ansible-collections.yml
+  python: python-packages.txt
 
 additional_build_steps:
   prepend: |
