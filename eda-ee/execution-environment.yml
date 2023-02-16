@@ -17,4 +17,5 @@ additional_build_steps:
   append: |
     ADD playbooks /runner/project
     WORKDIR /runner/project
+    ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
     LABEL quay.expires-after="45d"
