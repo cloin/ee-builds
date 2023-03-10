@@ -33,3 +33,5 @@ collections:
     version: 3.0.0
   - name: cisco.iosxr
     version: 3.0.0
+  - name: ansible.netcommon
+    version: 3.0.1
