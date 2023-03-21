@@ -1,5 +1,7 @@
 ---
 collections:
+  - ansible.workshops
+  - google.cloud
   - amazon.aws
   - amazon.cloud
   - community.aws
@@ -13,4 +15,6 @@ collections:
   - awx.awx
   - containers.podman
   - redhatinsights.insights
- 
+  - community.crypto
+  - azure.azcollection
+
