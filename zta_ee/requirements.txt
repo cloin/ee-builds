@@ -1,0 +1,7 @@
+unzip
+pysnow
+requests
+netaddr
+boto3
+awxkit
+ansible-lint
