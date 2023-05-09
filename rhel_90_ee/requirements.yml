@@ -7,3 +7,5 @@ collections:
 roles:
   - linux-system-roles.firewall
   - redhatinsights.insights-client
+  - dev-sec.ssh-hardening
+  - redhatofficial.rhel8_pci_dss

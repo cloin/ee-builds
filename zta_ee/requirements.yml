@@ -1,0 +1,20 @@
+---
+collections:
+  - ansible.workshops
+  - google.cloud
+  - amazon.aws
+  - amazon.cloud
+  - community.aws
+  - ansible.windows
+  - community.windows
+  - community.general
+  - ansible.utils
+  - ansible.posix
+  - chocolatey.chocolatey
+  - redhat_cop.controller_configuration
+  - awx.awx
+  - containers.podman
+  - redhatinsights.insights
+  - community.crypto
+  - azure.azcollection
+
