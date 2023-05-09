@@ -1,0 +1,22 @@
+---
+version: 1
+
+build_arg_defaults:
+  EE_BASE_IMAGE: 'registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8'
+
+
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
+  system: bindep.txt
+
+additional_build_steps:
+  append:
+    - RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/awscliv2.zip"
+    - RUN unzip /awscliv2.zip -d /aws
+    - RUN /aws/aws/install
+    - RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "/session-manager-plugin.rpm"
+    - RUN dnf install -y /session-manager-plugin.rpm
+    - RUN curl "https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_386.zip" -o "/terraform.zip"
+    - RUN unzip /terraform.zip -d /terraform
+    - RUN mv /terraform/terraform /bin

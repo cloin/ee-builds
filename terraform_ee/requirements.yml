@@ -1,0 +1,9 @@
+---
+collections:
+  - name: servicenow.itsm
+  - name: amazon.aws
+  - name: awx.awx
+  - name: amazon.cloud
+  - name: community.aws
+  - name: cloud.terraform
+    version: 1.0.0
