@@ -33,3 +33,6 @@ collections:
     version: 3.0.0
   - name: cisco.iosxr
     version: 3.0.0
+  #openshift
+  - name: redhat.openshift
+    version: 2.3.0
