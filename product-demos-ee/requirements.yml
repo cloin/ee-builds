@@ -35,3 +35,6 @@ collections:
     version: 5.0.0
   - name: ansible.netcommon
     version: 5.0.0
+  #openshift
+  - name: redhat.openshift
+    version: 2.3.0
