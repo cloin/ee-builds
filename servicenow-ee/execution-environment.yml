@@ -16,12 +16,15 @@ dependencies:
     galaxy: ansible-collections.yml
 
 additional_build_files:
-    - src: ../ansible.cfg
+    - src: ansible.cfg
       dest: configs
 
 additional_build_steps:
     prepend_galaxy:
         - COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+        - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_URL=https://console.redhat.com/api/automation-hub/content/xxxxxxx-synclist/
+        - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_AUTH_URL=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+        - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN=$AH_TOKEN
 
 options:
     package_manager_path: /usr/bin/microdnf

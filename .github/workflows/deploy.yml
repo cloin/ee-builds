@@ -79,8 +79,8 @@ jobs:
           --context=../${{ inputs.EE_FOLDER_NAME }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
-#         env:
-#           ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN: ${{ secrets.AH_TOKEN }}
+        env:
+          AH_TOKEN: ${{ secrets.AH_TOKEN }}
 # Above env var doesn't work yet: https://github.com/ansible/ansible-builder/issues/346
            
       - name: Push To quay.io
