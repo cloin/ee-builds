@@ -1,0 +1,9 @@
+---
+collections:
+  - community.general
+  - ansible.utils
+  - ansible.posix
+  - ansible.netcommon
+  - redhat_cop.controller_configuration
+  - awx.awx
+  - community.crypto
