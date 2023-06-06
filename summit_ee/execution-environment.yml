@@ -1,0 +1,16 @@
+---
+version: 2
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform/ee-minimal-rhel8:2.14
+  builder_image:
+    name: quay.io/ansible/ansible-builder:latest
+
+
+ansible_config: '../ansible.cfg'
+
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
+  system: bindep.txt
