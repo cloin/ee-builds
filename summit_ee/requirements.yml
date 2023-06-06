@@ -1,0 +1,22 @@
+---
+collections:
+  - google.cloud
+  - amazon.aws
+  - amazon.cloud
+  - community.aws
+  - community.general
+  - community.docker 
+  - ansible.utils
+  - ansible.posix
+  - ansible.netcommon
+  - redhat_cop.controller_configuration
+  - awx.awx
+  - containers.podman
+  - community.crypto
+  - azure.azcollection
+  - kubernetes.core
+  - redhat.rhel_system_roles
+  - fedora.linux_system_roles
+  - f5networks.f5_modules
+  - f5networks.f5_bigip
+
