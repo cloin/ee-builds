@@ -1,29 +1,24 @@
+---
 version: 3
 
 images:
-  base_image:
-    name: 'registry.access.redhat.com/ubi9/python-311:latest'
-
+    base_image:
+        name: 'minimal-decision-environment:latest'
 dependencies:
-  galaxy:
-    collections:
-      - ansible.eda
-      - cloin.eda
-  python:
-    - azure-servicebus
-    - aiobotocore
-    - aiohttp
-    - aiokafka
-    - watchdog
-    - systemd-python
-    - dpath
-    - ansible-rulebook
-  ansible_core:
-    package_pip: ansible-core==2.14.4
-  ansible_runner:
-    package_pip: ansible-runner
-  system:
-    - java-17-openjdk-devel [platform:rpm]
-options:
-    container_init:
-        entrypoint: '["/opt/builder/bin/entrypoint","ansible-rulebook", "-r"]'
+    python:
+        - aiohttp
+        - aiokafka
+        - boto
+        - boto3
+    system:
+        - pkgconf-pkg-config [platform:rpm]
+        - systemd-devel [platform:rpm]
+        - gcc [platform:rpm]
+        - python39-devel [platform:rpm]
+    galaxy:
+        collections:
+            - name: ansible.eda
+            - name: cloin.eda
+            - name: kubealex.eda
+            - name: ansible.utils
+            - name: community.general
