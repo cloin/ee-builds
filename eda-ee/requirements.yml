@@ -1,5 +1,0 @@
----
-collections:
-  - community.general
-  - ansible.eda
-  - servicenow.itsm

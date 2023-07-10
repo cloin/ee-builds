@@ -1,7 +1,0 @@
-gcc 
-python39
-python38-devel
-python39-devel
-nodejs
-java-17-openjdk-devel
-maven
