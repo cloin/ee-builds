@@ -22,3 +22,6 @@ dependencies:
             - name: kubealex.eda
             - name: ansible.utils
             - name: community.general
+
+options:
+    package_manager_path: /usr/bin/microdnf
