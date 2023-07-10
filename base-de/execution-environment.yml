@@ -3,7 +3,7 @@ version: 3
 
 images:
     base_image:
-        name: 'minimal-decision-environment:latest'
+        name: 'registry.redhat.io/ansible-automation-platform-24/de-minimal-rhel8:latest'
 dependencies:
     python:
         - aiohttp
