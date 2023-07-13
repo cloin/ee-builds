@@ -8,8 +8,7 @@ dependencies:
     python:
         - aiohttp
         - aiokafka
-        - boto
-        - boto3
+        - requests
     system:
         - pkgconf-pkg-config [platform:rpm]
         - systemd-devel [platform:rpm]
@@ -19,9 +18,6 @@ dependencies:
         collections:
             - name: ansible.eda
             - name: cloin.eda
-            - name: kubealex.eda
             - name: ansible.utils
-            - name: community.general
-
 options:
     package_manager_path: /usr/bin/microdnf
