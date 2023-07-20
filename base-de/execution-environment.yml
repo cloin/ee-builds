@@ -19,6 +19,6 @@ dependencies:
             - name: ansible.eda
             - name: cloin.eda
             - name: ansible.utils
-            - name: dynatrace.eda
+            - name: dynatrace.event_driven_ansible
 options:
     package_manager_path: /usr/bin/microdnf
