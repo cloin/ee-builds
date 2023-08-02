@@ -18,6 +18,7 @@ dependencies:
         collections:
             - name: ansible.eda
             - name: cloin.eda
+            - name: cloin.datadog
             - name: ansible.utils
             - name: dynatrace.event_driven_ansible
 options:
