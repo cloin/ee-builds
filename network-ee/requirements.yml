@@ -12,6 +12,7 @@ collections:
   - name: cisco.iosxr
   - name: cisco.nxos
   - name: cloud.common
+  - name: containers.podman
   - name: frr.frr
   - name: ibm.qradar
   - name: junipernetworks.junos
