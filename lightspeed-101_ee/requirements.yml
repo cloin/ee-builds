@@ -1,0 +1,15 @@
+---
+collections:
+  - google.cloud
+  - amazon.aws
+  - amazon.cloud
+  - community.aws
+  - community.general
+  - community.docker
+  - ansible.utils
+  - ansible.posix
+  - ansible.netcommon
+  - containers.podman
+  - community.crypto
+  - azure.azcollection
+  - fedora.linux_system_roles
