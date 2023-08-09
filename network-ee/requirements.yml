@@ -13,6 +13,7 @@ collections:
   - name: cisco.nxos
   - name: cloud.common
   - name: containers.podman
+  - name: fedora.linux_system_roles.selinux
   - name: frr.frr
   - name: ibm.qradar
   - name: junipernetworks.junos
