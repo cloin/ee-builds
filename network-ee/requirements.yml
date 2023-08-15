@@ -16,6 +16,7 @@ collections:
   - name: fedora.linux_system_roles
   - name: frr.frr
   - name: ibm.qradar
+  - name: infra.controller_configuration
   - name: junipernetworks.junos
   - name: kubernetes.core
   - name: openvswitch.openvswitch
