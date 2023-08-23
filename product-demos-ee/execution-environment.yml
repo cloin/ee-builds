@@ -20,7 +20,6 @@ additional_build_steps:
     - COPY _build/rpms/*.rpm /tmp/openshift-clients.rpm
     - RUN $PKGMGR install bash-completion
     - RUN rpm -ivh /tmp/openshift-clients.rpm
-  prepend:
     - RUN pip3 install --upgrade pip setuptools
-  append:
+  append_final:
     - LABEL quay.expires-after="45d"
