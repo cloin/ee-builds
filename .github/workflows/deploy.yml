@@ -76,7 +76,7 @@ jobs:
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           ansible-builder build -v 3 \
-          --context=../${{ inputs.EE_FOLDER_NAME }} \
+          # --context=../${{ inputs.EE_FOLDER_NAME }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
         env:
