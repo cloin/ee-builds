@@ -77,11 +77,9 @@ jobs:
         run: |
           ansible-builder build -v 3 \
           --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
+          --context=../${{ inputs.EE_FOLDER_NAME }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
-        # env:
-        #   AH_TOKEN: ${{ secrets.AH_TOKEN }}
-# Above env var doesn't work yet: https://github.com/ansible/ansible-builder/issues/346
            
       - name: Push To quay.io
         id: push-to-quay
