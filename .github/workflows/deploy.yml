@@ -76,7 +76,7 @@ jobs:
           --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
           --context=../${{ inputs.EE_FOLDER_NAME }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
-          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \  
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
            
       - name: Push To quay.io
         id: push-to-quay
