@@ -5,24 +5,19 @@ images:
   base_image:
     name: registry.redhat.io/ansible-automation-platform-23/ee-minimal-rhel8:latest
 
-build_arg_defaults:
-  ANSIBLE_GALAXY_CLI_COLLECTION_OPTS: '-vvv'
-
 dependencies:
-    ansible_core:
-        package_pip: ansible-core==2.15.0
-    ansible_runner:
-        package_pip: ansible-runner==2.3.2
     galaxy: ansible-collections.yml
 
 additional_build_files:
     - src: ansible.cfg
       dest: configs
 
-additional_build_steps:
-    prepend_galaxy:
-        - COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
-        - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN=$AH_TOKEN
-
 options:
     package_manager_path: /usr/bin/microdnf
+
+additional_build_steps:
+    prepend_base:
+        - RUN $PYCMD -m pip install --upgrade pip setuptools
+    prepend_galaxy:
+        - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+        - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN=$AH_TOKEN
