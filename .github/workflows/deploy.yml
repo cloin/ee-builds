@@ -64,11 +64,11 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
 
-      - name: Pull latest image for caching
+      - name: Pull latest image
         run: |
           podman pull quay.io/${{ inputs.QUAY_USER }}/${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} || true
   
-      - name: Build image using cache
+      - name: Build image
         id: build-image
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
@@ -76,9 +76,7 @@ jobs:
           --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
           --context=../${{ inputs.EE_FOLDER_NAME }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
-          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \
-          --cache-from=quay.io/${{ inputs.QUAY_USER }}/${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }}
-  
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }} \  
            
       - name: Push To quay.io
         id: push-to-quay
