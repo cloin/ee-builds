@@ -1,11 +1,6 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/codespaces-linux/.devcontainer/base.Dockerfile
+# Use Fedora 38 as the base image
+FROM fedora:38
 
-FROM mcr.microsoft.com/vscode/devcontainers/universal:1-focal
-
-# ** [Optional] Uncomment this section to install additional packages. **
-# USER root
-#
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-#
-# USER codespace
+# Install Java OpenJDK, python3-pip, and ansible
+RUN dnf --assumeyes install git python3-pip && \
+    pip3 install ansible ansible-builder
