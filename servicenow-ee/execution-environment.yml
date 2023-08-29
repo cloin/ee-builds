@@ -9,7 +9,7 @@ dependencies:
     galaxy: ansible-collections.yml
 
 additional_build_files:
-    # Can be used to reolve collections from private automation hub
+    # Can be used to resolve collections from private automation hub
     - src: ansible.cfg
       dest: configs
 
