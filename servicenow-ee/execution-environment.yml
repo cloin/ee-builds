@@ -7,6 +7,7 @@ images:
 
 dependencies:
     galaxy: ansible-collections.yml
+    python: python-packages.txt
 
 additional_build_files:
     # Can be used to resolve collections from private automation hub
