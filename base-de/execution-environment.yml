@@ -21,5 +21,6 @@ dependencies:
             - name: cloin.datadog
             - name: ansible.utils
             - name: dynatrace.event_driven_ansible
+            - name: cloin.prometheus
 options:
     package_manager_path: /usr/bin/microdnf
