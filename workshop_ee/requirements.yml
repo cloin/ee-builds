@@ -1,0 +1,8 @@
+---
+
+collections:
+  - name: redhat_cop.controller_configuration
+  - name: redhat_cop.tower_utilities
+  - name: redhat.rhel_system_roles
+
+
