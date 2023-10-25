@@ -7,3 +7,4 @@ collections:
   - name: community.aws
   - name: community.general
   - name: community.mysql
+  - name: containers.podman
