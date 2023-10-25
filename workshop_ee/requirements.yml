@@ -6,4 +6,4 @@ collections:
   - name: redhat.rhel_system_roles
   - name: community.aws
   - name: community.general
-
+  - name: community.mysql
