@@ -5,4 +5,5 @@ collections:
   - name: redhat_cop.tower_utilities
   - name: redhat.rhel_system_roles
   - name: community.aws
+  - name: community.general
 
