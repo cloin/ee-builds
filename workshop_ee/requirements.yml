@@ -8,3 +8,4 @@ collections:
   - name: community.general
   - name: community.mysql
   - name: containers.podman
+  - name: infra.controller_configuration
