@@ -12,33 +12,32 @@ on:
     #   - 'ee-builds/**'
 
 jobs:
-    prepare-matrix:
-        runs-on: ubuntu-latest
-        outputs:
-        matrix: ${{ steps.set-matrix.outputs.matrix }}
-        steps:
-        - name: Checkout repo
-          uses: actions/checkout@v2
-    
-        - name: Identify Changed EEs
-          id: set-matrix
-          run: |
-            git fetch --no-tags --depth=1000 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
-            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
-            CHANGED_EES=""
-    
-            for file in $CHANGED_FILES; do
-                if [[ $file == ee-builds/* ]]; then
-                EE_DIR=$(echo $file | cut -d'/' -f2)
-                if [[ ! $CHANGED_EES =~ (^|[[:space:]])$EE_DIR($|[[:space:]]) ]]; then
-                    CHANGED_EES+="$EE_DIR "
-                fi
-                fi
-            done
-    
-            CHANGED_EES=$(echo $CHANGED_EES | xargs)
-            echo "::set-output name=matrix::{\"include\":$(echo $CHANGED_EES | jq -R -s -c 'split(" ") | map({ee: .})')}"
-    
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    - name: Identify Changed EEs
+      id: set-matrix
+      run: |
+        git fetch --no-tags --depth=1000 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+        CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
+        CHANGED_EES=""
+
+        for file in $CHANGED_FILES; do
+            if [[ $file == ee-builds/* ]]; then
+            EE_DIR=$(echo $file | cut -d'/' -f2)
+            if [[ ! $CHANGED_EES =~ (^|[[:space:]])$EE_DIR($|[[:space:]]) ]]; then
+                CHANGED_EES+="$EE_DIR "
+            fi
+            fi
+        done
+
+        CHANGED_EES=$(echo $CHANGED_EES | xargs)
+        echo "::set-output name=matrix::{\"include\":$(echo $CHANGED_EES | jq -R -s -c 'split(" ") | map({ee: .})')}"  
 
   build-and-test:
     needs: [prepare-matrix]
