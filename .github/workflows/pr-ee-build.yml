@@ -44,6 +44,7 @@ jobs:
     needs: [prepare-matrix]
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    environment: deploy
     strategy:
       matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
       fail-fast: false
