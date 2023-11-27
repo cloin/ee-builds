@@ -24,7 +24,7 @@ jobs:
       - name: Identify Changed EEs
         id: set-matrix
         run: |
-          git fetch origin ${{ github.base_ref }}
+          git fetch --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.sha }})
           CHANGED_EES=""
 
