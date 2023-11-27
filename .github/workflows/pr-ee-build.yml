@@ -40,6 +40,9 @@ jobs:
           CHANGED_EES=$(echo $CHANGED_EES | xargs)
           echo "::set-output name=matrix::{\"include\":$(echo $CHANGED_EES | jq -R -s -c 'split(" ") | map({ee: .})')}"
 
+      - name: Print matrix output
+        run: echo "${{ steps.set-matrix.outputs.matrix }}"
+        
   build-and-test:
     needs: [prepare-matrix]
     if: github.event_name == 'pull_request'
