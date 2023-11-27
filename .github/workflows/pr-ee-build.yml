@@ -2,14 +2,14 @@ name: PR EE Build and Test
 
 on:
   pull_request:
-    paths:
-      - 'ee-builds/**'
+    # paths:
+    #   - 'ee-builds/**'
   push:
     branches:
     #   - main
       - pr-build-workflow
-    paths:
-      - 'ee-builds/**'
+    # paths:
+    #   - 'ee-builds/**'
 
 jobs:
   prepare-matrix:
