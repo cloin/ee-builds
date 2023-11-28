@@ -19,8 +19,6 @@ def main():
             dirs.add(dir_name)
 
     matrix = {'include': [{'ee': dir_name} for dir_name in dirs]}
-    print("Matrix:", matrix)  # Debugging output
-    print(json.dumps(matrix))
 
 if __name__ == "__main__":
     main()
