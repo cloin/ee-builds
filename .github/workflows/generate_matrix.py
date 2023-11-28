@@ -11,7 +11,6 @@ def main():
     base_ref = os.getenv('GITHUB_BASE_REF') or os.getenv('INPUT_BASE_REF')
     head_ref = os.getenv('GITHUB_HEAD_REF') or os.getenv('INPUT_HEAD_REF')
     changed_files = get_changed_files(base_ref, head_ref)
-    print("Changed files:", changed_files)  # Debugging output
     dirs = set()
 
     for file in changed_files:
