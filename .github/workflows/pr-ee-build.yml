@@ -62,6 +62,12 @@ jobs:
       - name: Install python requirements (ansible-builder)
         run: pip install -r requirements.txt
 
+      - name: Define environment variables
+        run: |
+          echo "EE=${{ matrix.ee }}" >> $GITHUB_ENV
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          echo "IMAGE_TAG=pr-${{ github.event.number }}-$SHORT_SHA" >> $GITHUB_ENV
+
       - name: Log in to quay.io
         uses: redhat-actions/podman-login@v1
         with:
@@ -83,20 +89,17 @@ jobs:
       - name: Build image
         working-directory: ${{ matrix.ee }}
         run: |
-          EE="${{ matrix.ee }}"
-          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
           ansible-builder build -v 3 \
           --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
-          --context=../$EE \
-          --tag=$EE:$IMAGE_TAG \
-          --tag=$EE:${{ github.sha }}
+          --context=../${{ env.EE }} \
+          --tag=${{ env.EE }}:${{ env.IMAGE_TAG }} \
+          --tag=${{ env.EE }}:${{ github.sha }}
 
       - name: Push To quay.io
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: $EE
-          tags: $IMAGE_TAG,${{ github.sha }}
+          image: ${{ env.EE }}
+          tags: ${{ env.IMAGE_TAG }}, ${{ github.sha }}
           registry: quay.io/${{ secrets.QUAY_USER }}/
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
