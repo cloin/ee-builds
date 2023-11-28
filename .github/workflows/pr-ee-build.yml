@@ -96,13 +96,13 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
 
-      - name: Save Pull Command
-        uses: actions/upload-artifact@v2
-        with:
-          name: pull-command-${{ matrix.ee }}
-          path: pull-command.txt
-        run: |
-          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > pull-command.txt
+      # - name: Save Pull Command
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: pull-command-${{ matrix.ee }}
+      #     path: pull-command.txt
+      #   run: |
+      #     echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > pull-command.txt
 
       # - name: Comment on PR with Pull Command
       #   if: github.event_name == 'pull_request'
