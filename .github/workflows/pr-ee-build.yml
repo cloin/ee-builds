@@ -3,7 +3,7 @@ name: PR EE Build and Test
 on:
   pull_request:
     branches:
-      - pr-builds
+      - main
   push:
     branches:
     #   - main
