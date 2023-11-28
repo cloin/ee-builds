@@ -16,7 +16,6 @@ def main():
     for file in changed_files:
         dir_name = os.path.dirname(file)
         if os.path.isfile(f"{dir_name}/execution-environment.yml"):
-            print("Adding directory:", dir_name)  # Debugging output
             dirs.add(dir_name)
 
     matrix = {'include': [{'ee': dir_name} for dir_name in dirs]}
