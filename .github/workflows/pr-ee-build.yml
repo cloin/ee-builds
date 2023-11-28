@@ -89,12 +89,12 @@ jobs:
 
           # Create artifact file
           COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
-          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > $COMMANDS_FILE
+          echo "```podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}```" > $COMMANDS_FILE
           echo "<details>" >> $COMMANDS_FILE
           echo "<summary>More...</summary>" >> $COMMANDS_FILE
-          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "\`\`\`\n" >> $COMMANDS_FILE
           ansible --version >> $COMMANDS_FILE
-          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "\n\`\`\`" >> $COMMANDS_FILE
           echo "</details>" >> $COMMANDS_FILE
 
       # - name: Create file
