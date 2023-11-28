@@ -20,31 +20,18 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
 
-    - name: Identify Changed EEs
+    - name: Generate matrix
+      id: generate-matrix
+      run: |
+        python .github/workflows/generate_matrix.py > matrix.json
+
+    - name: Read matrix
       id: set-matrix
       run: |
-        echo "Base ref: ${{ github.base_ref }}"
-        echo "Head ref: ${{ github.head_ref }}"
-        git fetch --no-tags --depth=1000 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
-        CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
-        declare -a DIRS
-    
-        for file in $CHANGED_FILES; do
-          DIR_NAME=$(dirname $file)
-          if [[ -f "$DIR_NAME/execution-environment.yml" ]]; then
-            if [[ ! " ${DIRS[@]} " =~ " ${DIR_NAME} " ]] && [[ -n $DIR_NAME ]]; then
-              DIRS+=("$DIR_NAME")
-            fi
-          fi
-        done
-    
-        # Convert bash array to JSON array, excluding empty elements
-        JSON_MATRIX=$(printf '%s\n' "${DIRS[@]}" | jq -R -s -c 'split("\n") | map(select(. != "")) | map({ee: .})')
-        echo "::set-output name=matrix::$JSON_MATRIX"
-    
+        echo "::set-output name=matrix::$(cat matrix.json)"
+
     - name: Print matrix output
       run: echo "${{ steps.set-matrix.outputs.matrix }}"
-    
 
     - name: Print matrix output
       run: echo "${{ steps.set-matrix.outputs.matrix }}"
