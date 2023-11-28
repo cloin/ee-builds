@@ -29,3 +29,4 @@ jobs:
       REDHAT_USERNAME: ${{ secrets.REDHAT_USERNAME }}
       REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
       AH_TOKEN: ${{ secrets.AH_TOKEN }}
+
