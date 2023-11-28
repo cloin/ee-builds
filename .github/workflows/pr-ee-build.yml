@@ -159,11 +159,15 @@ jobs:
             const path = require('path');
             let pullCommands = '';
 
-            const artifactDirectory = './';  // Directory where artifacts are downloaded
-            fs.readdirSync(artifactDirectory).forEach(file => {
-              if (file.startsWith('pull-command-')) {
-                const content = fs.readFileSync(path.join(artifactDirectory, file), 'utf8');
-                pullCommands += content + '\n';
+            const artifactsDirectory = './';  // Base directory where artifacts are downloaded
+            fs.readdirSync(artifactsDirectory, { withFileTypes: true }).forEach(dirent => {
+              if (dirent.isDirectory() && dirent.name.startsWith('pull-command-')) {
+                const artifactDirPath = path.join(artifactsDirectory, dirent.name);
+                fs.readdirSync(artifactDirPath).forEach(file => {
+                  const filePath = path.join(artifactDirPath, file);
+                  const content = fs.readFileSync(filePath, 'utf8');
+                  pullCommands += content + '\n';
+                });
               }
             });
 
@@ -175,3 +179,4 @@ jobs:
               issue_number: prNumber,
               body: commentBody
             });
+
