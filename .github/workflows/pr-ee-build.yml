@@ -28,20 +28,24 @@ jobs:
         git fetch --no-tags --depth=1000 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
         CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
         CHANGED_EES=""
-
+    
         for file in $CHANGED_FILES; do
           DIR_NAME=$(dirname $file)
           if [[ -f "$DIR_NAME/execution-environment.yml" ]]; then
-            DIR_NAME_CLEAN=$(echo "$DIR_NAME" | tr -d '\n')
+            # Use printf to avoid adding extra newlines
+            DIR_NAME_CLEAN=$(printf "%s" "$DIR_NAME")
             if [[ ! $CHANGED_EES =~ (^|[[:space:]])$DIR_NAME_CLEAN($|[[:space:]]) ]]; then
               CHANGED_EES+="$DIR_NAME_CLEAN "
             fi
           fi
         done
-
-        CHANGED_EES=$(echo $CHANGED_EES | xargs)
-        echo "::set-output name=matrix::{\"include\":$(echo $CHANGED_EES | jq -R -s -c 'split(" ") | map({ee: .})')}"
-
+    
+        # Trim trailing newlines and spaces
+        CHANGED_EES_TRIMMED=$(echo $CHANGED_EES | xargs)
+        # Construct JSON array for matrix
+        JSON_MATRIX=$(echo "$CHANGED_EES_TRIMMED" | jq -R -s -c 'split(" ") | map({ee: .})')
+        echo "::set-output name=matrix::$JSON_MATRIX"
+    
     - name: Print matrix output
       run: echo "${{ steps.set-matrix.outputs.matrix }}"
       
