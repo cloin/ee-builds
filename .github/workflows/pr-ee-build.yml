@@ -46,6 +46,11 @@ jobs:
         JSON_MATRIX=$(echo $CHANGED_EES_TRIMMED | jq -R -s -c 'split(" ") | map({ee: .})')
         echo "::set-output name=matrix::$JSON_MATRIX"
 
+        # Join EE names with comma and pass it to jq for JSON array construction
+        CHANGED_EES_JOINED=$(printf '%s,' $CHANGED_EES_TRIMMED | sed 's/,$//')
+        JSON_MATRIX=$(echo "[$CHANGED_EES_JOINED]" | jq -c '[.[] | {ee: .}]')
+        echo "::set-output name=matrix::$JSON_MATRIX"
+
     - name: Print matrix output
       run: echo "${{ steps.set-matrix.outputs.matrix }}"
       
@@ -56,8 +61,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
-      matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
-      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+      fail-fast: false    
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
