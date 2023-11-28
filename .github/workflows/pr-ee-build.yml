@@ -78,7 +78,7 @@ jobs:
         run: |
           sed -i "s/my_ah_token/${{ secrets.AH_TOKEN }}/1" ansible.cfg
 
-      - name: Build image
+      - name: Build image and create artifact
         working-directory: ${{ matrix.ee }}
         run: |
           ansible-builder build -v 3 \
@@ -86,6 +86,26 @@ jobs:
           --context=../${{ env.EE }} \
           --tag=${{ env.EE }}:${{ env.IMAGE_TAG }} \
           --tag=${{ env.EE }}:${{ github.sha }}
+
+          # Create artifact file
+          COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
+          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > $COMMANDS_FILE
+          echo "<details>" >> $COMMANDS_FILE
+          echo "<summary>More...</summary>" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          ansible --version >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "</details>" >> $COMMANDS_FILE
+
+      # - name: Create file
+      #   run: |
+      #     echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > pull-command-${{ matrix.ee }}.txt
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: commands-${{ matrix.ee }}
+          path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
 
       - name: Push To quay.io
         uses: redhat-actions/push-to-registry@v2
@@ -95,32 +115,6 @@ jobs:
           registry: quay.io/${{ secrets.QUAY_USER }}/
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
-
-      - name: Create file
-        run: |
-          echo "```podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}```<details><summary>More...</summary>## More\n - more details here</details>" > pull-command-${{ matrix.ee }}.txt
-
-      - name: Save file as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: pull-command-${{ matrix.ee }}
-          path: pull-command-${{ matrix.ee }}.txt
-
-
-      # - name: Comment on PR with Pull Command
-      #   if: github.event_name == 'pull_request'
-      #   uses: actions/github-script@v5
-      #   with:
-      #     script: |
-      #       const pullCommand = `podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}`;
-      #       const commentBody = `:rocket: **EE Image Built** :rocket:\n\nYou can pull the built image using the following command:\n\`\`\`\n${pullCommand}\n\`\`\``;
-      #       const prNumber = context.issue.number;
-      #       const repo = context.repo;
-      #       github.rest.issues.createComment({
-      #         ...repo,
-      #         issue_number: prNumber,
-      #         body: commentBody
-      #       });
 
       - name: Print summary
         run: |
@@ -140,7 +134,9 @@ jobs:
       #     IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
       #   #   podman tag $EE:$IMAGE_TAG $EE:latest
       #   #   podman push $EE:latest quay.io/${{ secrets.QUAY_USER }}/$EE
-  comment-on-pr:
+
+
+  comment_on_pr:
     if: github.event_name == 'pull_request'
     needs: build-and-test 
     runs-on: ubuntu-latest
@@ -157,26 +153,25 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            let pullCommands = '';
+            let commentBody = ':rocket: **EE Images Built** :rocket:\n\n';
 
             const artifactsDirectory = './';  // Base directory where artifacts are downloaded
             fs.readdirSync(artifactsDirectory, { withFileTypes: true }).forEach(dirent => {
-              if (dirent.isDirectory() && dirent.name.startsWith('pull-command-')) {
+              if (dirent.isDirectory() && dirent.name.startsWith('commands-')) {
                 const artifactDirPath = path.join(artifactsDirectory, dirent.name);
                 fs.readdirSync(artifactDirPath).forEach(file => {
                   const filePath = path.join(artifactDirPath, file);
                   const content = fs.readFileSync(filePath, 'utf8');
-                  pullCommands += content + '\n';
+                  commentBody += content + '\n\n';
                 });
               }
             });
 
-            const commentBody = `:rocket: **EE Images Built** :rocket:\n\nYou can pull the built images using the following commands:\n\n${pullCommands.trim()}\n`;
             const prNumber = context.issue.number;
             const repo = context.repo;
             github.rest.issues.createComment({
               ...repo,
               issue_number: prNumber,
-              body: commentBody
+              body: commentBody.trim()
             });
 
