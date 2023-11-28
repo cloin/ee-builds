@@ -40,14 +40,10 @@ jobs:
     - name: Read matrix
       id: set-matrix
       run: |
-        echo "::set-output name=matrix::$(cat matrix.json)"
+        echo "matrix=$(cat matrix.json)" >> $GITHUB_ENV
 
     - name: Print matrix output
-      run: echo "${{ steps.set-matrix.outputs.matrix }}"
-
-    - name: Print matrix output
-      run: echo "${{ steps.set-matrix.outputs.matrix }}"
-      
+      run: cat matrix.json  
 
   build-and-test:
     needs: [prepare-matrix]
@@ -55,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
-      matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
+      matrix: ${{fromJson(env.matrix)}}
       fail-fast: false
     steps:
       - name: Checkout repo
