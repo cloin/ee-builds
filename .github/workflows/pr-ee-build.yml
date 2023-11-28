@@ -94,8 +94,13 @@ jobs:
           echo "\`\`\`" >> $COMMANDS_FILE
           echo "<details>" >> $COMMANDS_FILE
           echo "<summary>More...</summary>" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
           ansible --version >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          ansible-navigator images ${{ env.EE }}:${{ env.IMAGE_TAG }} -d ansible_collections >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
           echo "</details>" >> $COMMANDS_FILE
 
