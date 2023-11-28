@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
-  
+
     - name: Identify Changed EEs
       id: set-matrix
       run: |
@@ -27,21 +27,20 @@ jobs:
         echo "Head ref: ${{ github.head_ref }}"
         git fetch --no-tags --depth=1000 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
         CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
-        echo "Changed files: $CHANGED_FILES"
         CHANGED_EES=""
-  
+
         for file in $CHANGED_FILES; do
           DIR_NAME=$(dirname $file)
           if [[ -f "$DIR_NAME/execution-environment.yml" ]]; then
-            if [[ ! $CHANGED_EES =~ (^|[[:space:]])$DIR_NAME($|[[:space:]]) ]]; then
-              CHANGED_EES+="$DIR_NAME "
+            DIR_NAME_CLEAN=$(echo "$DIR_NAME" | tr -d '\n')
+            if [[ ! $CHANGED_EES =~ (^|[[:space:]])$DIR_NAME_CLEAN($|[[:space:]]) ]]; then
+              CHANGED_EES+="$DIR_NAME_CLEAN "
             fi
           fi
         done
-  
+
         CHANGED_EES=$(echo $CHANGED_EES | xargs)
         echo "::set-output name=matrix::{\"include\":$(echo $CHANGED_EES | jq -R -s -c 'split(" ") | map({ee: .})')}"
-      
 
     - name: Print matrix output
       run: echo "${{ steps.set-matrix.outputs.matrix }}"
