@@ -104,27 +104,41 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
 
+      - name: Comment on PR with Pull Command
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const pullCommand = `podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}`;
+            const commentBody = `:rocket: **EE Image Built** :rocket:\n\nYou can pull the built image using the following command:\n\`\`\`\n${pullCommand}\n\`\`\``;
+            const prNumber = context.issue.number;
+            const repo = context.repo;
+            github.rest.issues.createComment({
+              ...repo,
+              issue_number: prNumber,
+              body: commentBody
+            });
 
       - name: Print summary
         run: |
           EE="${{ matrix.ee }}"
           SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
-        #   echo "## :rocket: Usage" >> $GITHUB_STEP_SUMMARY
-        #   echo "Image pushed to repository: quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG" >> $GITHUB_STEP_SUMMARY
-        #   echo "> \`podman pull quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG\`" >> $GITHUB_STEP_SUMMARY
-        #   echo "## :pushpin: Ansible info:" >> $GITHUB_STEP_SUMMARY
-        #   ansible --version >> $GITHUB_STEP_SUMMARY
-        #   echo "## :pushpin: Installed collections:" >> $GITHUB_STEP_SUMMARY
-        #   ansible-galaxy collection list >> $GITHUB_STEP_SUMMARY
-        #   echo "## :pushpin: Containerfile:" >> $GITHUB_STEP_SUMMARY
-        #   cat ee-builds/$EE/Containerfile >> $GITHUB_STEP_SUMMARY
+          echo "## :rocket: Usage" >> $GITHUB_STEP_SUMMARY
+          echo "Image pushed to repository: quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG" >> $GITHUB_STEP_SUMMARY
+          echo "> \`podman pull quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG\`" >> $GITHUB_STEP_SUMMARY
+          echo "## :pushpin: Ansible info:" >> $GITHUB_STEP_SUMMARY
+          ansible --version >> $GITHUB_STEP_SUMMARY
+          echo "## :pushpin: Installed collections:" >> $GITHUB_STEP_SUMMARY
+          ansible-galaxy collection list >> $GITHUB_STEP_SUMMARY
+          echo "## :pushpin: Containerfile:" >> $GITHUB_STEP_SUMMARY
+          cat ee-builds/$EE/Containerfile >> $GITHUB_STEP_SUMMARY
 
-      - name: Update Latest Tag on Merge
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          EE="${{ matrix.ee }}"
-          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
-        #   podman tag $EE:$IMAGE_TAG $EE:latest
-        #   podman push $EE:latest quay.io/${{ secrets.QUAY_USER }}/$EE
+      # - name: Update Latest Tag on Merge
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   run: |
+      #     EE="${{ matrix.ee }}"
+      #     SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+      #     IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
+      #   #   podman tag $EE:$IMAGE_TAG $EE:latest
+      #   #   podman push $EE:latest quay.io/${{ secrets.QUAY_USER }}/$EE
