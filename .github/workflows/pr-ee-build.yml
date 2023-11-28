@@ -98,7 +98,7 @@ jobs:
 
       - name: Create file
         run: |
-          echo "<details>\n\`\`\`\npodman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}\`\`\`\n\n<summary>*More...*</summary>## More\n- more details here</details>" > pull-command-${{ matrix.ee }}.txt
+          echo "```podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}```<details><summary>More...</summary>## More\n - more details here</details>" > pull-command-${{ matrix.ee }}.txt
 
       - name: Save file as artifact
         uses: actions/upload-artifact@v2
@@ -140,7 +140,7 @@ jobs:
       #     IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
       #   #   podman tag $EE:$IMAGE_TAG $EE:latest
       #   #   podman push $EE:latest quay.io/${{ secrets.QUAY_USER }}/$EE
-  comment_on_pr:
+  comment-on-pr:
     if: github.event_name == 'pull_request'
     needs: build-and-test 
     runs-on: ubuntu-latest
