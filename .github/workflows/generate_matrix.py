@@ -5,6 +5,7 @@ import os
 def get_changed_files(base_ref, head_ref):
     cmd = f"git diff --name-only origin/{base_ref}...origin/{head_ref}".split()
     result = subprocess.run(cmd, capture_output=True, text=True)
+    print(result)
     return result.stdout.strip().split('\n')
 
 def main():
