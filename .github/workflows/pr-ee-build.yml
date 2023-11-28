@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
-
+  
     - name: Identify Changed EEs
       id: set-matrix
       run: |
@@ -31,16 +31,17 @@ jobs:
         CHANGED_EES=""
   
         for file in $CHANGED_FILES; do
-            if [[ $file == ee-builds/* ]]; then
-            EE_DIR=$(echo $file | cut -d'/' -f2)
-            if [[ ! $CHANGED_EES =~ (^|[[:space:]])$EE_DIR($|[[:space:]]) ]]; then
-                CHANGED_EES+="$EE_DIR "
+          DIR_NAME=$(dirname $file)
+          if [[ -f "$DIR_NAME/execution-environment.yml" ]]; then
+            if [[ ! $CHANGED_EES =~ (^|[[:space:]])$DIR_NAME($|[[:space:]]) ]]; then
+              CHANGED_EES+="$DIR_NAME "
             fi
-            fi
+          fi
         done
   
         CHANGED_EES=$(echo $CHANGED_EES | xargs)
         echo "::set-output name=matrix::{\"include\":$(echo $CHANGED_EES | jq -R -s -c 'split(" ") | map({ee: .})')}"
+      
 
     - name: Print matrix output
       run: echo "${{ steps.set-matrix.outputs.matrix }}"
