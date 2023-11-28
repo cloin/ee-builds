@@ -32,7 +32,7 @@ jobs:
 
     - name: Generate matrix
       id: generate-matrix
-      working-directory: $GITHUB_WORKSPACE
+      working-directory: ${{ GITHUB_WORKSPACE }}
       run: |
         echo $GITHUB_BASE_REF
         echo $GITHUB_HEAD_REF
