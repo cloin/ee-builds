@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
-      matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
       fail-fast: false
     steps:
       - name: Checkout repo
