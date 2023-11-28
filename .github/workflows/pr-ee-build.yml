@@ -28,28 +28,19 @@ jobs:
         git fetch --no-tags --depth=1000 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
         CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
         CHANGED_EES=""
-  
+
         for file in $CHANGED_FILES; do
           DIR_NAME=$(dirname $file)
           if [[ -f "$DIR_NAME/execution-environment.yml" ]]; then
-            # Remove trailing slashes and newlines
-            DIR_NAME_CLEAN=$(echo "$DIR_NAME" | sed 's:/*$::' | tr -d '\n')
+            DIR_NAME_CLEAN=$(echo "$DIR_NAME" | tr -d '\n')
             if [[ ! $CHANGED_EES =~ (^|[[:space:]])$DIR_NAME_CLEAN($|[[:space:]]) ]]; then
               CHANGED_EES+="$DIR_NAME_CLEAN "
             fi
           fi
         done
-  
-        # Trim leading/trailing whitespace and remove any internal newlines
-        CHANGED_EES_TRIMMED=$(echo $CHANGED_EES | xargs | tr -d '\n')
-        # Construct JSON array for matrix
-        JSON_MATRIX=$(echo $CHANGED_EES_TRIMMED | jq -R -s -c 'split(" ") | map({ee: .})')
-        echo "::set-output name=matrix::$JSON_MATRIX"
 
-        # Join EE names with comma and pass it to jq for JSON array construction
-        CHANGED_EES_JOINED=$(printf '%s,' $CHANGED_EES_TRIMMED | sed 's/,$//')
-        JSON_MATRIX=$(echo "[$CHANGED_EES_JOINED]" | jq -c '[.[] | {ee: .}]')
-        echo "::set-output name=matrix::$JSON_MATRIX"
+        CHANGED_EES=$(echo $CHANGED_EES | xargs)
+        echo "::set-output name=matrix::{\"include\":$(echo $CHANGED_EES | jq -R -s -c 'split(" ") | map({ee: .})')}"
 
     - name: Print matrix output
       run: echo "${{ steps.set-matrix.outputs.matrix }}"
@@ -61,8 +52,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
-      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
-      fail-fast: false    
+      matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
+      fail-fast: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
