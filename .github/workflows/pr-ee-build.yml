@@ -23,7 +23,7 @@ jobs:
     - name: Generate matrix
       id: generate-matrix
       run: |
-        python .github/workflows/generate_matrix.py > matrix.json
+        python -u .github/workflows/generate_matrix.py > matrix.json
 
     - name: Read matrix
       id: set-matrix
