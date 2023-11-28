@@ -40,7 +40,7 @@ jobs:
     
         # Convert bash array to JSON array, excluding empty elements
         JSON_MATRIX=$(printf '%s\n' "${DIRS[@]}" | jq -R -s -c 'split("\n") | map(select(. != "")) | map({ee: .})')
-        echo "::set-output name=matrix::$(printf '%s\n' "${DIRS[@]}" | jq -R -s -c 'split("\n") | map(select(. != "")) | map({ee: .})')
+        echo "::set-output name=matrix::$(printf '%s\n' "${DIRS[@]}" | jq -R -s -c 'split("\n") | map(select(. != "")) | map({ee: .})')"
     
 
     - name: Print matrix output
