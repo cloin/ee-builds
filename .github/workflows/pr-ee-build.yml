@@ -98,7 +98,7 @@ jobs:
 
       - name: Create file
         run: |
-          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > pull-command-${{ matrix.ee }}.txt
+          echo "<details>\n\`\`\`\npodman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}\`\`\`\n\n<summary>*More...*</summary>## More\n- more details here</details>" > pull-command-${{ matrix.ee }}.txt
 
       - name: Save file as artifact
         uses: actions/upload-artifact@v2
@@ -171,7 +171,7 @@ jobs:
               }
             });
 
-            const commentBody = `:rocket: **EE Images Built** :rocket:\n\nYou can pull the built images using the following commands:\n\`\`\`\n${pullCommands.trim()}\n\`\`\``;
+            const commentBody = `:rocket: **EE Images Built** :rocket:\n\nYou can pull the built images using the following commands:\n\n${pullCommands.trim()}\n`;
             const prNumber = context.issue.number;
             const repo = context.repo;
             github.rest.issues.createComment({
