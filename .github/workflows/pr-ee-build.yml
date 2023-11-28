@@ -27,6 +27,7 @@ jobs:
         echo "Head ref: ${{ github.head_ref }}"
         git fetch --no-tags --depth=1000 origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
         CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
+        echo "Changed files: $CHANGED_FILES"
         CHANGED_EES=""
   
         for file in $CHANGED_FILES; do
