@@ -10,6 +10,14 @@ on:
       - pr-build-workflow
     # paths:
     #   - 'ee-builds/**'
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: 'Base ref'
+        required: true
+      head_ref:
+        description: 'Head ref'
+        required: true
 
 jobs:
   prepare-matrix:
@@ -19,6 +27,8 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Generate matrix
       id: generate-matrix
