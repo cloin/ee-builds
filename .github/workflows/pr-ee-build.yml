@@ -7,7 +7,7 @@ on:
   push:
     branches:
     #   - main
-      - pr-build-workflow
+      - pr-builds
     # paths:
     #   - 'ee-builds/**'
 
