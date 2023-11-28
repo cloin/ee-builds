@@ -96,13 +96,16 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
 
-      - name: Save Pull Command
+      - name: Create file
+        run: |
+          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > pull-command-${{ matrix.ee }}.txt
+
+      - name: Save file as artifact
         uses: actions/upload-artifact@v2
         with:
           name: pull-command-${{ matrix.ee }}
-          path: pull-command.txt
-        run: |
-          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > pull-command.txt
+          path: pull-command-${{ matrix.ee }}.txt
+
 
       # - name: Comment on PR with Pull Command
       #   if: github.event_name == 'pull_request'
@@ -137,3 +140,38 @@ jobs:
       #     IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
       #   #   podman tag $EE:$IMAGE_TAG $EE:latest
       #   #   podman push $EE:latest quay.io/${{ secrets.QUAY_USER }}/$EE
+  comment_on_pr:
+    if: github.event_name == 'pull_request'
+    needs: build-and-test 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Post Comment
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            let pullCommands = '';
+
+            const artifactDirectory = './';  // Directory where artifacts are downloaded
+            fs.readdirSync(artifactDirectory).forEach(file => {
+              if (file.startsWith('pull-command-')) {
+                const content = fs.readFileSync(path.join(artifactDirectory, file), 'utf8');
+                pullCommands += content + '\n';
+              }
+            });
+
+            const commentBody = `:rocket: **EE Images Built** :rocket:\n\nYou can pull the built images using the following commands:\n\`\`\`\n${pullCommands.trim()}\n\`\`\``;
+            const prNumber = context.issue.number;
+            const repo = context.repo;
+            github.rest.issues.createComment({
+              ...repo,
+              issue_number: prNumber,
+              body: commentBody
+            });
