@@ -16,6 +16,10 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: debug changed files
+      run: |
+        git diff --name-only HEAD^1 HEAD
+
     - name: Generate matrix  
       id: generate-matrix
       working-directory: ${{ github.workspace }}
