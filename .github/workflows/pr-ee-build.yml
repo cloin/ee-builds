@@ -111,6 +111,7 @@ jobs:
       - name: test ansible-navigator command
         run: |
           ansible-navigator --version
+          podman images
           ansible-navigator images -m stdout
           ansible-navigator images localhost/${{ env.EE }}:${{ github.sha }} -d ansible_collections -m stdout --ll debug --ee false
 
