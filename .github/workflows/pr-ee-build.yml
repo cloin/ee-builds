@@ -111,7 +111,7 @@ jobs:
       - name: test ansible-navigator command
         run: |
           ansible-navigator images -m stdout
-          ansible-navigator images localhost/${{ env.EE }}:${{ github.sha }} -d ansible_collections -m stdout
+          ansible-navigator images localhost/${{ env.EE }}:${{ github.sha }} -d ansible_collections -m stdout --ll debug
 
       - name: Upload Log File
         if: always()  # This ensures the step runs even if previous steps fail
