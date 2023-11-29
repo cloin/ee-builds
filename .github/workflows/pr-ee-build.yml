@@ -113,6 +113,14 @@ jobs:
           ansible-navigator images -m stdout
           ansible-navigator images localhost/${{ env.EE }}:${{ github.sha }} -d ansible_collections -m stdout
 
+      - name: Upload Log File
+        if: always()  # This ensures the step runs even if previous steps fail
+        uses: actions/upload-artifact@v2
+        with:
+          name: error-logs
+          path: ansible-navigator.log
+
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
