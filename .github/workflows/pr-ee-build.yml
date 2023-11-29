@@ -111,7 +111,7 @@ jobs:
       - name: test ansible-navigator command
         run: |
           ansible-navigator images -m stdout
-          ansible-navigator images ${{ env.EE }}:${{ env.IMAGE_TAG }} -d ansible_collections -m stdout
+          ansible-navigator images localhost/${{ env.EE }}:${{ github.sha }} -d ansible_collections -m stdout
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
