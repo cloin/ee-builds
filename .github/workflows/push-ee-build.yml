@@ -35,6 +35,11 @@ jobs:
       run: |
         ls -l
 
+    - name: cat matrix
+      working-directory: ${{ github.workspace }}
+      run: |
+        cat matrix.json
+
     - name: Read matrix
       id: set-matrix
       working-directory: ${{ github.workspace }}
