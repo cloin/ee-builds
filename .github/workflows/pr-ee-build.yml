@@ -1,15 +1,10 @@
-name: PR EE Build and Test
+name: Devel EE Build
 
 on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-    #   - main
-      - pr-builds
-    # paths:
-    #   - 'ee-builds/**'
+    types: [opened, reopened, synchronize]
 
 jobs:
   prepare-matrix:
@@ -22,7 +17,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Generate matrix
+    - name: Generate matrix  
       id: generate-matrix
       run: |
         echo $GITHUB_BASE_REF
@@ -74,9 +69,9 @@ jobs:
           username: ${{ secrets.REDHAT_USERNAME }}
           password: ${{ secrets.REDHAT_PASSWORD }}
 
-      # - name: Substitute token for automation hub
-      #   run: |
-      #     sed -i "s/my_ah_token/${{ secrets.AH_TOKEN }}/1" ansible.cfg
+      - name: Substitute token for automation hub
+        run: |
+          sed -i "s/my_ah_token/${{ secrets.AH_TOKEN }}/1" ansible.cfg
 
       - name: Build image and create artifact
         working-directory: ${{ matrix.ee }}
@@ -135,18 +130,7 @@ jobs:
           echo "Image pushed to repository: quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG" >> $GITHUB_STEP_SUMMARY
           echo "> \`podman pull quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG\`" >> $GITHUB_STEP_SUMMARY
 
-
-      # - name: Update Latest Tag on Merge
-      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      #   run: |
-      #     EE="${{ matrix.ee }}"
-      #     SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-      #     IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
-      #   #   podman tag $EE:$IMAGE_TAG $EE:latest
-      #   #   podman push $EE:latest quay.io/${{ secrets.QUAY_USER }}/$EE
-
-
-  comment-on-pr:
+  post-comment:
     if: github.event_name == 'pull_request'
     needs: build-ee 
     runs-on: ubuntu-latest
@@ -158,7 +142,7 @@ jobs:
         uses: actions/download-artifact@v2
 
       - name: Post Comment
-        uses: actions/github-script@v5
+        uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
