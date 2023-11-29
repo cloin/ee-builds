@@ -9,6 +9,7 @@ def get_changed_files_for_push(ancestor_commit, head_commit):
     return result.stdout.strip().split('\n')
 
 def main():
+    github_workspace = os.getenv('GITHUB_WORKSPACE')
     if len(sys.argv) == 3:
         ancestor_commit = sys.argv[1]
         head_commit = sys.argv[2]
@@ -29,7 +30,8 @@ def main():
     dirs = set()
     for file in changed_files:
         dir_name = os.path.dirname(file)
-        if os.path.isfile(f"{dir_name}/execution-environment.yml"):
+        ee_file_path = os.path.join(github_workspace, dir_name, "execution-environment.yml")
+        if os.path.isfile(ee_file_path):
             dirs.add(dir_name)
 
     matrix = {'include': [{'ee': dir_name} for dir_name in dirs]}
