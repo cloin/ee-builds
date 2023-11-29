@@ -110,6 +110,7 @@ jobs:
 
       - name: test ansible-navigator command
         run: |
+          ansible-navigator images -m stdout
           ansible-navigator images ${{ env.EE }}:${{ env.IMAGE_TAG }} -d ansible_collections -m stdout
 
       - name: Upload build artifact
