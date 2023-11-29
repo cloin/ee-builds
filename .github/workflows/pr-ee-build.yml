@@ -39,7 +39,7 @@ jobs:
       run: |
         echo "${{ steps.set-matrix.outputs.matrix }}"
 
-  build-and-test:
+  build-ee:
     needs: [prepare-matrix]
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -89,7 +89,8 @@ jobs:
 
           # Create artifact file
           COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
-          echo "${{ env.EE }}" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "EE: ${{ env.EE }}" >> $COMMANDS_FILE
           echo "" >> $COMMANDS_FILE
           echo "\`\`\`" > $COMMANDS_FILE
           echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
@@ -145,7 +146,7 @@ jobs:
       #   #   podman push $EE:latest quay.io/${{ secrets.QUAY_USER }}/$EE
 
 
-  comment_on_pr:
+  comment-on-pr:
     if: github.event_name == 'pull_request'
     needs: build-and-test 
     runs-on: ubuntu-latest
