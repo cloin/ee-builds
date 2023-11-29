@@ -18,6 +18,7 @@ jobs:
 
     - name: Generate matrix  
       id: generate-matrix
+      working-directory: ${{ github.workspace }}
       run: |
         echo "HEAD^1 SHA:"
         git rev-parse HEAD^1
