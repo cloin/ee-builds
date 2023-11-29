@@ -148,7 +148,7 @@ jobs:
 
   comment-on-pr:
     if: github.event_name == 'pull_request'
-    needs: build-and-test 
+    needs: build-ee 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
