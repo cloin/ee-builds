@@ -1,0 +1,170 @@
+name: Devel EE Build
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize]
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Generate matrix  
+      id: generate-matrix
+      run: |
+        echo $GITHUB_BASE_REF
+        echo $GITHUB_HEAD_REF
+        python -u .github/workflows/generate_matrix.py > matrix.json
+
+    - name: Read matrix
+      id: set-matrix
+      run: |
+        MATRIX_JSON=$(cat matrix.json)
+        echo "::set-output name=matrix::$MATRIX_JSON"
+
+    - name: Print matrix output
+      run: |
+        echo "${{ steps.set-matrix.outputs.matrix }}"
+
+  build-ee:
+    needs: [prepare-matrix]
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: deploy
+    strategy:
+      matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
+      fail-fast: false
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install python requirements (ansible-builder)
+        run: pip install -r requirements.txt
+
+      - name: Define environment variables
+        run: |
+          echo "EE=${{ matrix.ee }}" >> $GITHUB_ENV
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          echo "IMAGE_TAG=pr-${{ github.event.number }}-$SHORT_SHA" >> $GITHUB_ENV
+
+      - name: Log in to quay.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: quay.io
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
+
+      - name: Log in to registry.redhat.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: registry.redhat.io
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
+
+      - name: Substitute token for automation hub
+        run: |
+          sed -i "s/my_ah_token/${{ secrets.AH_TOKEN }}/1" ansible.cfg
+
+      - name: Build image and create artifact
+        working-directory: ${{ matrix.ee }}
+        run: |
+          ansible-builder build -v 3 \
+          --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
+          --context=../${{ env.EE }} \
+          --tag=${{ env.EE }}:${{ env.IMAGE_TAG }} \
+          --tag=${{ env.EE }}:${{ github.sha }}
+
+          # Create artifact file
+          COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
+          echo "" >> $COMMANDS_FILE
+          echo "EE: ${{ env.EE }}" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" > $COMMANDS_FILE
+          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "<details>" >> $COMMANDS_FILE
+          echo "<summary><b>More info...</b></summary>" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "#### Installed collections" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible-galaxy collection list  >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "#### Ansible version" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible --version  >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "</details>" >> $COMMANDS_FILE
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: commands-${{ matrix.ee }}
+          path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
+
+      - name: Push To quay.io
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ env.EE }}
+          tags: ${{ env.IMAGE_TAG }} ${{ github.sha }}
+          registry: quay.io/${{ secrets.QUAY_USER }}/
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
+
+      - name: Print summary
+        run: |
+          EE="${{ matrix.ee }}"
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
+          echo "## :rocket: Usage" >> $GITHUB_STEP_SUMMARY
+          echo "Image pushed to repository: quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG" >> $GITHUB_STEP_SUMMARY
+          echo "> \`podman pull quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG\`" >> $GITHUB_STEP_SUMMARY
+
+  post-comment:
+    if: github.event_name == 'pull_request'
+    needs: build-ee 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Post Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            let commentBody = '### :rocket: **EE Images Built** :rocket:\n\n';
+
+            const artifactsDirectory = './';  // Base directory where artifacts are downloaded
+            fs.readdirSync(artifactsDirectory, { withFileTypes: true }).forEach(dirent => {
+              if (dirent.isDirectory() && dirent.name.startsWith('commands-')) {
+                const artifactDirPath = path.join(artifactsDirectory, dirent.name);
+                fs.readdirSync(artifactDirPath).forEach(file => {
+                  const filePath = path.join(artifactDirPath, file);
+                  const content = fs.readFileSync(filePath, 'utf8');
+                  commentBody += content + '\n';
+                });
+              }
+            });
+
+            const prNumber = context.issue.number;
+            const repo = context.repo;
+            github.rest.issues.createComment({
+              ...repo,
+              issue_number: prNumber,
+              body: commentBody.trim()
+            });
