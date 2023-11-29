@@ -98,29 +98,37 @@ jobs:
           echo "\`\`\`" >> $COMMANDS_FILE
           ansible --version >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
-          # echo "" >> $COMMANDS_FILE
-          # echo "\`\`\`" >> $COMMANDS_FILE
-          # ansible-navigator -m stdout images ${{ env.EE }}:${{ env.IMAGE_TAG }} -d ansible_collections >> $COMMANDS_FILE
-          # echo "\`\`\`" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "### Installed collections" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible-galaxy collection list  >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "### Ansible version" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible --version  >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
           echo "</details>" >> $COMMANDS_FILE
 
       # - name: Create file
       #   run: |
       #     echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" > pull-command-${{ matrix.ee }}.txt
 
-      - name: test ansible-navigator command
-        run: |
-          ansible-navigator --version
-          podman images
-          ansible-navigator images -m stdout
-          ansible-navigator images localhost/${{ env.EE }}:${{ github.sha }} -d ansible_collections -m stdout --ll debug --ee false
+      # - name: test ansible-navigator command
+      #   run: |
+      #     ansible-navigator --version
+      #     podman images
+      #     ansible-navigator images -m stdout
+      #     ansible-navigator images localhost/${{ env.EE }}:${{ github.sha }} -d ansible_collections -m stdout --ll debug --ee false
 
-      - name: Upload Log File
-        if: always()  # This ensures the step runs even if previous steps fail
-        uses: actions/upload-artifact@v2
-        with:
-          name: error-logs
-          path: ansible-navigator.log
+      # - name: Upload Log File
+      #   if: always()  # This ensures the step runs even if previous steps fail
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: error-logs
+      #     path: ansible-navigator.log
 
 
       - name: Upload build artifact
