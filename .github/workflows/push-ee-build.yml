@@ -19,6 +19,10 @@ jobs:
     - name: Generate matrix  
       id: generate-matrix
       run: |
+        echo "HEAD^1 SHA:"
+        git rev-parse HEAD^1
+        echo "HEAD SHA:"
+        git rev-parse HEAD
         python -u .github/workflows/generate_matrix.py > matrix.json
 
     - name: Read matrix
