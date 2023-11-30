@@ -24,7 +24,10 @@ jobs:
       run: |
         echo $GITHUB_BASE_REF
         echo $GITHUB_HEAD_REF
-        python -u .github/workflows/generate_matrix.py origin/$GITHUB_BASE_REF origin/$GITHUB_HEAD_REF
+        python -u .github/workflows/generate_matrix.py \
+        --start-ref origin/$GITHUB_BASE_REF \
+        --end-ref origin/$GITHUB_HEAD_REF \
+        --output-path matrix_output.json
 
     - name: Read matrix
       id: set-matrix
