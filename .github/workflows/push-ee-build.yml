@@ -28,7 +28,7 @@ jobs:
         git rev-parse HEAD^1
         echo "HEAD SHA:"
         git rev-parse HEAD
-        python -u .github/workflows/generate_matrix.py > matrix.json
+        python -u .github/workflows/generate_matrix.py
       
     - name: Run ls
       working-directory: ${{ github.workspace }}
@@ -44,7 +44,7 @@ jobs:
       id: set-matrix
       working-directory: ${{ github.workspace }}
       run: |
-        MATRIX_JSON=$(cat matrix.json)
+        MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
 
     - name: Print matrix output

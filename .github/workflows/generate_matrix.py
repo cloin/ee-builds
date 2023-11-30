@@ -25,22 +25,19 @@ def main():
     github_workspace = os.getenv('GITHUB_WORKSPACE')
     logger.debug(f"GitHub workspace: {github_workspace}")
 
-    if len(sys.argv) == 3:
-        ancestor_commit = sys.argv[1]
-        head_commit = sys.argv[2]
-        changed_files = get_changed_files_for_push(ancestor_commit, head_commit, logger)
+    is_pr = os.getenv('GITHUB_BASE_REF') is not None and os.getenv('GITHUB_HEAD_REF') is not None
+    if is_pr:
+        base_ref = os.getenv('GITHUB_BASE_REF')
+        head_ref = os.getenv('GITHUB_HEAD_REF')
+        cmd = ["git", "diff", "--name-only", f"origin/{base_ref}", f"origin/{head_ref}"]
     else:
-        is_pr = os.getenv('GITHUB_BASE_REF') is not None and os.getenv('GITHUB_HEAD_REF') is not None
+        cmd = ["git", "diff", "--name-only", "HEAD^1", "HEAD"]
 
-        if is_pr:
-            base_ref = os.getenv('GITHUB_BASE_REF')
-            head_ref = os.getenv('GITHUB_HEAD_REF')
-            cmd = ["git", "diff", "--name-only", f"origin/{base_ref}", f"origin/{head_ref}"]
-        else:
-            cmd = ["git", "diff", "--name-only", "HEAD^1", "HEAD"]
-
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        changed_files = result.stdout.strip().split('\n')
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    changed_files = result.stdout.strip().split('\n')
+    logger.debug("Changed files:")
+    for file in changed_files:
+        logger.debug(file)
 
     dirs = set()
     for file in changed_files:
@@ -53,7 +50,10 @@ def main():
 
     matrix = {'include': [{'ee': dir_name} for dir_name in dirs]}
     logger.info(f"Generated matrix: {json.dumps(matrix)}")
-    print(json.dumps(matrix))
+
+    # Write matrix to a separate file
+    with open('matrix_output.json', 'w') as file:
+        file.write(json.dumps(matrix))
 
 if __name__ == "__main__":
     main()
