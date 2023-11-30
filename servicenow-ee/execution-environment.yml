@@ -29,4 +29,3 @@ additional_build_steps:
         # Use the above ARG to define an environment variable holding
         # the token for resolving private collections
         - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN=$AH_TOKEN
-

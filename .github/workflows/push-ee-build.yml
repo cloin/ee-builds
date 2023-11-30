@@ -16,29 +16,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: debug changed files
-      run: |
-        git diff --name-only HEAD^1 HEAD
-
     - name: Generate matrix  
       id: generate-matrix
       working-directory: ${{ github.workspace }}
       run: |
-        echo "HEAD^1 SHA:"
-        git rev-parse HEAD^1
-        echo "HEAD SHA:"
-        git rev-parse HEAD
         python -u .github/workflows/generate_matrix.py $(git rev-parse HEAD^1) $(git rev-parse HEAD)
-      
-    - name: Run ls
-      working-directory: ${{ github.workspace }}
-      run: |
-        ls -l
-
-    - name: cat matrix
-      working-directory: ${{ github.workspace }}
-      run: |
-        cat matrix_output.json
 
     - name: Read matrix
       id: set-matrix
@@ -92,59 +74,56 @@ jobs:
         run: |
           echo "Would build: ${{ env.EE }}"
 
-      # - name: Build image and create artifact
-      #   working-directory: ${{ matrix.ee }}
-      #   run: |
-      #     ansible-builder build -v 3 \
-      #     --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
-      #     --context=../${{ env.EE }} \
-      #     --tag=${{ env.EE }}:${{ env.IMAGE_TAG }} \
-      #     --tag=${{ env.EE }}:${{ github.sha }}
+      - name: Build image and create artifact
+        working-directory: ${{ matrix.ee }}
+        run: |
+          ansible-builder build -v 3 \
+          --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
+          --context=../${{ env.EE }} \
+          --tag=${{ env.EE }}:${{ env.IMAGE_TAG }} \
+          --tag=${{ env.EE }}:${{ github.sha }}
 
-      #     # Create artifact file
-      #     COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
-      #     echo "" >> $COMMANDS_FILE
-      #     echo "EE: ${{ env.EE }}" >> $COMMANDS_FILE
-      #     echo "" >> $COMMANDS_FILE
-      #     echo "\`\`\`" > $COMMANDS_FILE
-      #     echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
-      #     echo "\`\`\`" >> $COMMANDS_FILE
-      #     echo "<details>" >> $COMMANDS_FILE
-      #     echo "<summary><b>More info...</b></summary>" >> $COMMANDS_FILE
-      #     echo "" >> $COMMANDS_FILE
-      #     echo "#### Installed collections" >> $COMMANDS_FILE
-      #     echo "" >> $COMMANDS_FILE
-      #     echo "\`\`\`" >> $COMMANDS_FILE
-      #     podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible-galaxy collection list  >> $COMMANDS_FILE
-      #     echo "\`\`\`" >> $COMMANDS_FILE
-      #     echo "" >> $COMMANDS_FILE
-      #     echo "#### Ansible version" >> $COMMANDS_FILE
-      #     echo "" >> $COMMANDS_FILE
-      #     echo "\`\`\`" >> $COMMANDS_FILE
-      #     podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible --version  >> $COMMANDS_FILE
-      #     echo "\`\`\`" >> $COMMANDS_FILE
-      #     echo "</details>" >> $COMMANDS_FILE
+          # Create artifact file
+          COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
+          echo "" >> $COMMANDS_FILE
+          echo "EE: ${{ env.EE }}" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" > $COMMANDS_FILE
+          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "<details>" >> $COMMANDS_FILE
+          echo "<summary><b>More info...</b></summary>" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "#### Installed collections" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible-galaxy collection list  >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "#### Ansible version" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible --version  >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          echo "</details>" >> $COMMANDS_FILE
 
-      # - name: Upload build artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: commands-${{ matrix.ee }}
-      #     path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: commands-${{ matrix.ee }}
+          path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
 
-      # - name: Push To quay.io
-      #   uses: redhat-actions/push-to-registry@v2
-      #   with:
-      #     image: ${{ env.EE }}
-      #     tags: ${{ env.IMAGE_TAG }} ${{ github.sha }}
-      #     registry: quay.io/${{ secrets.QUAY_USER }}/
-      #     username: ${{ secrets.REDHAT_USERNAME }}
-      #     password: ${{ secrets.REDHAT_PASSWORD }}
+      - name: Push To quay.io
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ env.EE }}
+          tags: ${{ env.IMAGE_TAG }} ${{ github.sha }}
+          registry: quay.io/${{ secrets.QUAY_USER }}/
+          username: ${{ secrets.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
 
-      # - name: Print summary
-      #   run: |
-      #     EE="${{ matrix.ee }}"
-      #     SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-      #     IMAGE_TAG="pr-${{ github.event.number }}-$SHORT_SHA"
-      #     echo "## :rocket: Usage" >> $GITHUB_STEP_SUMMARY
-      #     echo "Image pushed to repository: quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG" >> $GITHUB_STEP_SUMMARY
-      #     echo "> \`podman pull quay.io/${{ secrets.QUAY_USER }}/$EE:$IMAGE_TAG\`" >> $GITHUB_STEP_SUMMARY
+      - name: Print summary
+        run: |
+          echo "## :rocket: Usage" >> $GITHUB_STEP_SUMMARY
+          echo "Image pushed to repository: quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $GITHUB_STEP_SUMMARY
+          echo "> \`podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
