@@ -39,6 +39,7 @@ jobs:
         MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
         MATRIX_LENGTH=$(echo $MATRIX_JSON | jq '.include | length')
+        echo $MATRIX_LENGTH
         echo "::set-output name=length::$MATRIX_LENGTH"
 
     - name: Debug matrix
@@ -46,7 +47,6 @@ jobs:
         MATRIX_JSON='${{ steps.set-matrix.outputs.matrix }}'
         echo $MATRIX_JSON
         echo $MATRIX_JSON | jq '.include | length'
-        echo "$MATRIX_LENGTH"
 
   build-ee:
     needs: [prepare-matrix]
