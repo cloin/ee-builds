@@ -42,15 +42,9 @@ jobs:
         echo $MATRIX_LENGTH
         echo "::set-output name=length::$MATRIX_LENGTH"
 
-    - name: Debug matrix
-      run: |
-        MATRIX_JSON='${{ steps.set-matrix.outputs.matrix }}'
-        echo $MATRIX_JSON
-        echo $MATRIX_LENGTH
-
   build-ee:
     needs: [prepare-matrix]
-    if: ${{ needs.prepare-matrix.outputs.length > 0 }}
+    if: ${{ needs.prepare-matrix.outputs.length != '0' }}
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
