@@ -35,7 +35,7 @@ jobs:
 
   build-ee:
     needs: [prepare-matrix]
-    if: github.event_name == 'pull_request'
+    if: ${{ fromJson(needs.prepare-matrix.outputs.matrix).include && fromJson(needs.prepare-matrix.outputs.matrix).include.length > 0 }}
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
