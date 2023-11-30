@@ -8,9 +8,7 @@ on:
 
 jobs:
   prepare-matrix:
-    runs-on: ubuntu-latest
-    env:
-      PYTHONUNBUFFERED: "1"    
+    runs-on: ubuntu-latest  
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
