@@ -60,10 +60,10 @@ def main():
             dirs.add(dir_name)
 
     matrix = {'include': [{'ee': dir_name} for dir_name in dirs]}
-    logger.info(f"Generated matrix: {json.dumps(matrix)}")
+    logger.info(f"Generated matrix: {json.dumps(matrix, indent=4)}")
 
     with open(args.output_path, 'w') as file:
-        file.write(json.dumps(matrix, indent=4))
+        file.write(json.dumps(matrix))
 
 if __name__ == "__main__":
     main()
