@@ -29,6 +29,7 @@ dependencies:
             - name: dynatrace.event_driven_ansible
             - name: cloin.prometheus
             - name: crowdstrike.falcon
+
 options:
     package_manager_path: /usr/bin/microdnf
 
