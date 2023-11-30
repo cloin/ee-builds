@@ -38,10 +38,17 @@ jobs:
       run: |
         MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
-        echo "$MATRIX_JSON"
+
+    - name: Debug matrix
+      run: |
+        MATRIX_JSON='${{ steps.set-matrix.outputs.matrix }}'
+        echo $MATRIX_JSON
+        echo $MATRIX_JSON | jq '.include | length'
+        echo "${{ fromJson(steps.set-matrix.outputs.matrix).include.length }}"
 
   build-ee:
     needs: [prepare-matrix]
+    # if: ${{ fromJson(needs.prepare-matrix.outputs.matrix).include && fromJson(needs.prepare-matrix.outputs.matrix).include.length > 0 }}
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
