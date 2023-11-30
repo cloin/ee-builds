@@ -9,6 +9,8 @@ on:
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: "1"    
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -22,12 +24,12 @@ jobs:
       run: |
         echo $GITHUB_BASE_REF
         echo $GITHUB_HEAD_REF
-        python -u .github/workflows/generate_matrix.py > matrix.json
+        python -u .github/workflows/generate_matrix.py
 
     - name: Read matrix
       id: set-matrix
       run: |
-        MATRIX_JSON=$(cat matrix.json)
+        MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
 
     - name: Print matrix output
