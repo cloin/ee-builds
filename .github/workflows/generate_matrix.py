@@ -49,8 +49,15 @@ def main():
 
     logger.info(f"Start ref: {args.start_ref}, End ref: {args.end_ref}")
 
-    # handle head_ref directly
-    changed_files = get_changed_files(args.start_ref, "refs/remotes/origin/" + args.end_ref, logger)
+    # determine if end_ref is a commit hash or a branch name
+    if args.end_ref.startswith("refs/"):
+        # branch reference
+        end_ref = args.end_ref
+    else:
+        # commit hash
+        end_ref = args.end_ref
+
+    changed_files = get_changed_files(args.start_ref, end_ref, logger)
     dirs = set()
 
     for file in changed_files:
