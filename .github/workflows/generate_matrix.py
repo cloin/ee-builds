@@ -49,7 +49,8 @@ def main():
 
     logger.info(f"Start ref: {args.start_ref}, End ref: {args.end_ref}")
 
-    changed_files = get_changed_files(args.start_ref, args.end_ref, logger)
+    # handle head_ref directly
+    changed_files = get_changed_files(args.start_ref, "refs/remotes/origin/" + args.end_ref, logger)
     dirs = set()
 
     for file in changed_files:
