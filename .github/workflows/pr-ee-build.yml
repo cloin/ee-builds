@@ -30,7 +30,7 @@ jobs:
         echo $GITHUB_HEAD_REF
         python -u .github/workflows/generate_matrix.py \
         --start-ref origin/$GITHUB_BASE_REF \
-        --end-ref origin/$GITHUB_HEAD_REF \
+        --end-ref $GITHUB_HEAD_REF \
         --output-path matrix_output.json
 
     - name: Read matrix
