@@ -46,7 +46,7 @@ jobs:
       run: |
         MATRIX_JSON='${{ steps.set-matrix.outputs.matrix }}'
         echo $MATRIX_JSON
-        echo $MATRIX_JSON | jq '.include | length'
+        echo $MATRIX_LENGTH
 
   build-ee:
     needs: [prepare-matrix]
