@@ -28,7 +28,7 @@ jobs:
         git rev-parse HEAD^1
         echo "HEAD SHA:"
         git rev-parse HEAD
-        python -u .github/workflows/generate_matrix.py
+        python -u .github/workflows/generate_matrix.py $(git rev-parse HEAD^1) $(git rev-parse HEAD)
       
     - name: Run ls
       working-directory: ${{ github.workspace }}
