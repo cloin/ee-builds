@@ -39,12 +39,11 @@ jobs:
         MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
         MATRIX_LENGTH=$(echo $MATRIX_JSON | jq '.include | length')
-        echo $MATRIX_LENGTH
-        echo "::set-output name=length::$MATRIX_LENGTH"
+        echo $MATRIX_LENGTH >> $GITHUB_ENV
 
   build-ee:
     needs: [prepare-matrix]
-    if: ${{ needs.prepare-matrix.outputs.length != '0' }}
+    if: ${{ env.GITHUB_ENV != '0' }}
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
