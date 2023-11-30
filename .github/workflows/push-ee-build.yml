@@ -20,7 +20,10 @@ jobs:
       id: generate-matrix
       working-directory: ${{ github.workspace }}
       run: |
-        python -u .github/workflows/generate_matrix.py $(git rev-parse HEAD^1) $(git rev-parse HEAD)
+        python -u .github/workflows/generate_matrix.py \
+        --start-ref $(git rev-parse HEAD^1) \
+        --end-ref $(git rev-parse HEAD) \
+        --output matrix_output.json
 
     - name: Read matrix
       id: set-matrix
@@ -28,10 +31,6 @@ jobs:
       run: |
         MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
-
-    - name: Print matrix output
-      run: |
-        echo "${{ steps.set-matrix.outputs.matrix }}"
 
   build-ee:
     needs: [prepare-matrix]
