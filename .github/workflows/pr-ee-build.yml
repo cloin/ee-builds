@@ -11,11 +11,18 @@ jobs:
     runs-on: ubuntu-latest  
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      length: ${{ steps.set-matrix.outputs.length }}
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        ref: ${{ github.head_ref }}
+
+    - name: Fetch the base and head refs
+      run: |
+        git fetch origin ${{ github.base_ref }}
+        git fetch origin ${{ github.head_ref }}
 
     - name: Generate matrix  
       id: generate-matrix
@@ -24,7 +31,7 @@ jobs:
         echo $GITHUB_HEAD_REF
         python -u .github/workflows/generate_matrix.py \
         --start-ref origin/$GITHUB_BASE_REF \
-        --end-ref origin/$GITHUB_HEAD_REF \
+        --end-ref $GITHUB_HEAD_REF \
         --output-path matrix_output.json
 
     - name: Read matrix
@@ -32,10 +39,13 @@ jobs:
       run: |
         MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
+        MATRIX_LENGTH=$(echo $MATRIX_JSON | jq '.include | length')
+        echo $MATRIX_LENGTH
+        echo "::set-output name=length::$MATRIX_LENGTH"
 
   build-ee:
     needs: [prepare-matrix]
-    if: ${{ fromJson(needs.prepare-matrix.outputs.matrix).include && fromJson(needs.prepare-matrix.outputs.matrix).include.length > 0 }}
+    if: ${{ needs.prepare-matrix.outputs.length != '0' }}
     runs-on: ubuntu-latest
     environment: deploy
     strategy:
