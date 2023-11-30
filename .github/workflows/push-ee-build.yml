@@ -32,10 +32,6 @@ jobs:
         MATRIX_JSON=$(cat matrix_output.json)
         echo "::set-output name=matrix::$MATRIX_JSON"
 
-    - name: Print matrix output
-      run: |
-        echo "${{ steps.set-matrix.outputs.matrix }}"
-
   build-ee:
     needs: [prepare-matrix]
     runs-on: ubuntu-latest
