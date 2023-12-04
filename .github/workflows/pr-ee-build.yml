@@ -127,8 +127,8 @@ jobs:
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ env.EE }}
-          tags: ${{ env.IMAGE_TAG }} ${{ github.sha }}
-          registry: ghcr.io
+          tags: ${{ env.IMAGE_TAG }}
+          registry: ghcr.io/cloin
 
       - name: Print summary
         run: |
