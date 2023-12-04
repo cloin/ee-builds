@@ -51,13 +51,15 @@ jobs:
     needs: [prepare-matrix]
     if: ${{ needs.prepare-matrix.outputs.length != '0' }}
     runs-on: ubuntu-latest
-    environment: deploy
+    environment: test
     strategy:
       matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
       fail-fast: false
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Install python requirements (ansible-builder)
         run: pip install -r requirements.txt
@@ -68,19 +70,12 @@ jobs:
           SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           echo "IMAGE_TAG=pr-${{ github.event.number }}-$SHORT_SHA" >> $GITHUB_ENV
 
-      - name: Log in to quay.io
+      - name: Login to ghcr
         uses: redhat-actions/podman-login@v1
         with:
-          registry: quay.io
-          username: ${{ secrets.REDHAT_USERNAME }}
-          password: ${{ secrets.REDHAT_PASSWORD }}
-
-      - name: Log in to registry.redhat.io
-        uses: redhat-actions/podman-login@v1
-        with:
-          registry: registry.redhat.io
-          username: ${{ secrets.REDHAT_USERNAME }}
-          password: ${{ secrets.REDHAT_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Substitute token for automation hub
         run: |
@@ -125,14 +120,12 @@ jobs:
           name: commands-${{ matrix.ee }}
           path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
 
-      - name: Push To quay.io
+      - name: Push To GHCR
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ env.EE }}
           tags: ${{ env.IMAGE_TAG }} ${{ github.sha }}
-          registry: quay.io/${{ secrets.QUAY_USER }}/
-          username: ${{ secrets.REDHAT_USERNAME }}
-          password: ${{ secrets.REDHAT_PASSWORD }}
+          registry: ghcr.io
 
       - name: Print summary
         run: |
