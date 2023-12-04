@@ -47,6 +47,8 @@ jobs:
   build-ee:
     needs: [prepare-matrix]
     if: ${{ needs.prepare-matrix.outputs.length != '0' }}
+    outputs:
+      push_success: ${{ steps.push_to_ghcr.outputs.push_success }}
     runs-on: ubuntu-latest
     environment: test
     strategy:
@@ -126,11 +128,16 @@ jobs:
           path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
 
       - name: Push To GHCR
+        id: push_to_ghcr
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ${{ env.EE }}
           tags: ${{ env.IMAGE_TAG }}
           registry: ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}
+
+      - name: Set push success flag
+        if: success()
+        run: echo "push_success=true" >> $GITHUB_ENV
 
       - name: Print summary
         run: |
@@ -139,8 +146,8 @@ jobs:
           echo "> \`podman pull ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/${{ env.EE }}:${{ env.IMAGE_TAG }}\`" >> $GITHUB_STEP_SUMMARY
 
   post-comment:
-    if: github.event_name == 'pull_request'
-    needs: build-ee 
+    needs: build-ee
+    if: ${{ needs.build-ee.outputs.push_success == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
