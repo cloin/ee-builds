@@ -18,6 +18,7 @@ jobs:
       with:
         fetch-depth: 0
         ref: ${{ github.event.pull_request.head.ref != '' && github.event.pull_request.head.ref || 'main' }}
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
 
     - name: Fetch the base and head refs
       run: |
