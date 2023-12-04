@@ -20,11 +20,6 @@ jobs:
         fetch-depth: 0
         ref: ${{ github.event.pull_request.head.ref != '' && github.event.pull_request.head.ref || 'main' }}
 
-    # - name: Fetch the base and head refs
-    #   run: |
-    #     git fetch origin ${{ github.base_ref }}
-    #     git fetch origin ${{ github.head_ref }}
-
     - name: Generate matrix  
       id: generate-matrix
       run: |
@@ -147,7 +142,6 @@ jobs:
 
   post-comment:
     needs: build-ee
-    if: ${{ needs.build-ee.outputs.push_success == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
