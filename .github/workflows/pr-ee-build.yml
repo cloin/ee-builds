@@ -95,10 +95,10 @@ jobs:
           # Create artifact file
           COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
           echo "" >> $COMMANDS_FILE
-          echo "EE: ${{ env.EE }}" >> $COMMANDS_FILE
+          echo "${{ env.EE }}" >> $COMMANDS_FILE
           echo "" >> $COMMANDS_FILE
           echo "\`\`\`" > $COMMANDS_FILE
-          echo "podman pull quay.io/${{ secrets.QUAY_USER }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
+          echo "podman pull ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
           echo "<details>" >> $COMMANDS_FILE
           echo "<summary><b>More info...</b></summary>" >> $COMMANDS_FILE
