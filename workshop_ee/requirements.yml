@@ -10,3 +10,4 @@ collections:
   - name: containers.podman
   - name: infra.controller_configuration
   - name: community.crypto
+  - name: chocolatey.chocolatey
