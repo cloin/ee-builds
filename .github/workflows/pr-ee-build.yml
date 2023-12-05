@@ -13,8 +13,11 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       length: ${{ steps.set-matrix.outputs.length }}
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
+    - name: Checkout main
+      uses: actions/checkout@v4
+
+    - name: Checkout external PR (or the same if you're Colin)
+      uses: actions/checkout@v4 
       with:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         fetch-depth: 0
