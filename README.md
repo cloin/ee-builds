@@ -4,7 +4,8 @@
 
 [![ServiceNow EE build](https://github.com/cloin/ee-builds/actions/workflows/servicenow-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/servicenow-ee-build.yml) [![Windows EE build](https://github.com/cloin/ee-builds/actions/workflows/windows-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/windows-ee-build.yml) [![f5 EE build](https://github.com/cloin/ee-builds/actions/workflows/f5-ee-build.yml/badge.svg)](https://github.com/cloin/ee-builds/actions/workflows/f5-ee-build.yml) [![RHEL 90 min EE build](https://github.com/cloin/ee-builds/actions/workflows/rhel_90-ee.yml/badge.svg?branch=main)](https://github.com/cloin/ee-builds/actions/workflows/rhel_90-ee.yml)
 
-![workflow](https://github.com/cloin/ee-builds/assets/8515817/b18c02e4-4f9d-47a8-9e5c-6124c332e76a)
+![workflow](https://github.com/cloin/ee-builds/assets/8515817/1417c81b-a98d-4889-9bb3-0d133a54c8d0)
+
 
 ### Contributions
 The directories in this repository should follow the format that `ansible-builder` expects. See [servicenow-ee](https://github.com/cloin/ee-builds/tree/main/servicenow-ee) as an example. The name you give the directory should also be the name of the image. You can also copy the [servicenow-ee workflow](https://github.com/cloin/ee-builds/blob/main/.github/workflows/servicenow-ee-build.yml) file and adjust the parameters. Questions? Open an issue!
