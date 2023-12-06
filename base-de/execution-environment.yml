@@ -10,24 +10,9 @@ additional_build_files:
       dest: configs
 
 dependencies:
-    python:
-        - aiohttp
-        - aiokafka
-        - requests
-    system:
-        - pkgconf-pkg-config [platform:rpm]
-        - systemd-devel [platform:rpm]
-        - gcc [platform:rpm]
-        - python39-devel [platform:rpm]
-    galaxy:
-        collections:
-            - name: ansible.eda
-            - name: cloin.eda
-            - name: cloin.datadog
-            - name: ansible.utils
-            - name: dynatrace.event_driven_ansible
-            - name: cloin.prometheus
-            - name: crowdstrike.falcon
+    galaxy: ansible-collections.yml
+    python: python-packages.txt
+    system: system-packages.txt
 
 options:
     package_manager_path: /usr/bin/microdnf
