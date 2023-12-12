@@ -65,7 +65,7 @@ jobs:
       - name: Process EE Versions and Build Images
         working-directory: ${{ matrix.ee }}
         run: |
-          python -u ../.github/workflows/process_matrix.py --input-path .
+          python -u ../.github/workflows/process_matrix.py .
           VERSION_MATRIX=$(cat ee_matrix_output.json)
           for ITEM in $(echo $VERSION_MATRIX | jq -c '.include[]'); do
             VERSION=$(echo $ITEM | jq -r '.version')
