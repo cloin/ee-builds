@@ -64,7 +64,7 @@ jobs:
 
       - name: Process EE Versions and Build Images
         working-directory: ${{ matrix.ee }}
-        run: python .github/workflows/process_builds.py .
+        run: python ../.github/workflows/process_builds.py .
 
 
       # - name: Process EE Versions and Build Images
