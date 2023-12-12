@@ -1,9 +1,9 @@
 name: Devel EE Build
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
-      - main
+      - workflow-testing
     types: [opened, reopened, synchronize]
 
 jobs:
@@ -13,37 +13,34 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       length: ${{ steps.set-matrix.outputs.length }}
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
-      with:
-        repository: ${{ github.event.pull_request.head.repo.full_name }}
-        fetch-depth: 0
-        ref: ${{ github.event.pull_request.head.ref != '' && github.event.pull_request.head.ref || 'main' }}
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref != '' && github.event.pull_request.head.ref || 'main' }}
 
-    - name: Generate matrix  
-      id: generate-matrix
-      run: |
-        echo $GITHUB_BASE_REF
-        echo $GITHUB_HEAD_REF
-        python -u .github/workflows/generate_matrix.py \
-        --start-ref origin/$GITHUB_BASE_REF \
-        --end-ref $GITHUB_HEAD_REF \
-        --output-path matrix_output.json
+      - name: Generate matrix  
+        id: generate-matrix
+        run: |
+          echo $GITHUB_BASE_REF
+          echo $GITHUB_HEAD_REF
+          python -u .github/workflows/generate_matrix.py \
+          --start-ref origin/$GITHUB_BASE_REF \
+          --end-ref $GITHUB_HEAD_REF \
+          --output-path matrix_output.json
 
-    - name: Read matrix
-      id: set-matrix
-      run: |
-        MATRIX_JSON=$(cat matrix_output.json)
-        echo "::set-output name=matrix::$MATRIX_JSON"
-        MATRIX_LENGTH=$(echo $MATRIX_JSON | jq '.include | length')
-        echo $MATRIX_LENGTH
-        echo "::set-output name=length::$MATRIX_LENGTH"
+      - name: Read matrix
+        id: set-matrix
+        run: |
+          MATRIX_JSON=$(cat matrix_output.json)
+          echo "::set-output name=matrix::$MATRIX_JSON"
+          MATRIX_LENGTH=$(echo $MATRIX_JSON | jq '.include | length')
+          echo $MATRIX_LENGTH
+          echo "::set-output name=length::$MATRIX_LENGTH"
 
   build-ee:
     needs: [prepare-matrix]
-    if: ${{ needs.prepare-matrix.outputs.length != '0' }}
-    outputs:
-      push_success: ${{ steps.push_to_ghcr.outputs.push_success }}
     runs-on: ubuntu-latest
     environment: test
     strategy:
@@ -65,62 +62,61 @@ jobs:
           echo "IMAGE_TAG=pr-${{ github.event.number }}-$SHORT_SHA" >> $GITHUB_ENV
           echo "IMAGE_REGISTRY=ghcr.io" >> $GITHUB_ENV
 
-      - name: Login to ghcr
-        uses: redhat-actions/podman-login@v1
-        with:
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Log in to registry.redhat.io
-        uses: redhat-actions/podman-login@v1
-        with:
-          registry: registry.redhat.io
-          username: ${{ secrets.REDHAT_SA_USERNAME }}
-          password: ${{ secrets.REDHAT_SA_PASSWORD }}
-
-      - name: Substitute token for automation hub
-        run: |
-          sed -i "s/my_ah_token/${{ secrets.AH_TOKEN }}/1" ansible.cfg
-
-      - name: Build image and create artifact
+      - name: Process EE Versions and Build Images
         working-directory: ${{ matrix.ee }}
         run: |
-          ansible-builder build -v 3 \
-          --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
-          --context=../${{ env.EE }} \
-          --tag=${{ env.EE }}:${{ env.IMAGE_TAG }} \
-          --tag=${{ env.EE }}:${{ github.sha }}
+          python -u .github/workflows/process_matrix.py --input-path ${{ matrix.ee }}
+          VERSION_MATRIX=$(cat ee_matrix_output.json)
+          for ITEM in $(echo $VERSION_MATRIX | jq -c '.include[]'); do
+            VERSION=$(echo $ITEM | jq -r '.version')
+            BASE_IMAGE=$(echo $ITEM | jq -r '.base_image')
+            TAG_SUFFIX="${VERSION}-${{ env.IMAGE_TAG }}"
 
-          # Create artifact file
-          COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
-          echo "" >> $COMMANDS_FILE
-          echo "${{ env.EE }}" >> $COMMANDS_FILE
-          echo "" >> $COMMANDS_FILE
-          echo "\`\`\`" > $COMMANDS_FILE
-          echo "podman pull ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
-          echo "\`\`\`" >> $COMMANDS_FILE
-          echo "<details>" >> $COMMANDS_FILE
-          echo "<summary><b>More info...</b></summary>" >> $COMMANDS_FILE
-          echo "" >> $COMMANDS_FILE
-          echo "#### Installed collections" >> $COMMANDS_FILE
-          echo "" >> $COMMANDS_FILE
-          echo "\`\`\`" >> $COMMANDS_FILE
-          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible-galaxy collection list  >> $COMMANDS_FILE
-          echo "\`\`\`" >> $COMMANDS_FILE
-          echo "" >> $COMMANDS_FILE
-          echo "#### Ansible version" >> $COMMANDS_FILE
-          echo "" >> $COMMANDS_FILE
-          echo "\`\`\`" >> $COMMANDS_FILE
-          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible --version  >> $COMMANDS_FILE
-          echo "\`\`\`" >> $COMMANDS_FILE
-          echo "</details>" >> $COMMANDS_FILE
+            if [ "$VERSION" == "default" ]; then
+              TAG_SUFFIX="${{ env.IMAGE_TAG }}"
+              ansible-builder build -v 3 \
+              --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
+              --context=../${{ matrix.ee }} \
+              --tag=${{ matrix.ee }}:$TAG_SUFFIX \
+              --tag=${{ matrix.ee }}:${{ github.sha }}
+            else
+              ansible-builder build -v 3 \
+              --build-arg EE_BASE_IMAGE=$BASE_IMAGE \
+              --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
+              --context=../${{ matrix.ee }} \
+              --tag=${{ matrix.ee }}:$TAG_SUFFIX \
+              --tag=${{ matrix.ee }}:${{ github.sha }}
+            fi
 
-      - name: Upload build artifact
+            # Create artifact file for each version
+            COMMANDS_FILE="commands-${{ matrix.ee }}-$VERSION.txt"
+            echo "" >> $COMMANDS_FILE
+            echo "${{ matrix.ee }} - $VERSION" >> $COMMANDS_FILE
+            echo "" >> $COMMANDS_FILE
+            echo "\`\`\`" > $COMMANDS_FILE
+            echo "podman pull ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/${{ matrix.ee }}:$TAG_SUFFIX" >> $COMMANDS_FILE
+            echo "\`\`\`" >> $COMMANDS_FILE
+            echo "<details>" >> $COMMANDS_FILE
+            echo "<summary><b>More info...</b></summary>" >> $COMMANDS_FILE
+            echo "" >> $COMMANDS_FILE
+            echo "#### Installed collections" >> $COMMANDS_FILE
+            echo "" >> $COMMANDS_FILE
+            echo "\`\`\`" >> $COMMANDS_FILE
+            podman run -it ${{ matrix.ee }}:$TAG_SUFFIX ansible-galaxy collection list >> $COMMANDS_FILE
+            echo "\`\`\`" >> $COMMANDS_FILE
+            echo "" >> $COMMANDS_FILE
+            echo "#### Ansible version" >> $COMMANDS_FILE
+            echo "" >> $COMMANDS_FILE
+            echo "\`\`\`" >> $COMMANDS_FILE
+            podman run -it ${{ matrix.ee }}:$TAG_SUFFIX ansible --version >> $COMMANDS_FILE
+            echo "\`\`\`" >> $COMMANDS_FILE
+            echo "</details>" >> $COMMANDS_FILE
+
+      - name: Upload build artifact for ${{ matrix.ee }} - $VERSION
         uses: actions/upload-artifact@v2
         with:
-          name: commands-${{ matrix.ee }}
-          path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
+          name: commands-${{ matrix.ee }}-$VERSION
+          path: ${{ matrix.ee }}/commands-${{ matrix.ee }}-$VERSION.txt
 
       - name: Push To GHCR
         id: push_to_ghcr
