@@ -15,7 +15,7 @@ def setup_logger():
 
 def process_matrix(input_path):
     logger = setup_logger()
-    ee_name = os.path.basename(os.getcwd()) 
+    ee_name = os.path.basename(os.getcwd())
     logger.info(f"Generating EE build matrix for: {ee_name}")
 
     matrix_file = os.path.join(input_path, 'matrix.yml')
@@ -45,9 +45,9 @@ def main():
 
     input_path = sys.argv[1]
     matrix = process_matrix(input_path)
-    print(json.dumps(matrix))
+
     with open('ee_matrix_output.json', 'w') as outfile:
-        json.dump(matrix, outfile)
+        json.dump(matrix, outfile, indent=4)
 
 if __name__ == "__main__":
     main()
