@@ -15,7 +15,8 @@ def setup_logger():
 
 def process_matrix(input_path):
     logger = setup_logger()
-    logger.info(f"Generating EE build matrix for: {input_path}")
+    ee_name = os.path.basename(os.getcwd()) 
+    logger.info(f"Generating EE build matrix for: {ee_name}")
 
     matrix_file = os.path.join(input_path, 'matrix.yml')
     matrix = {'include': []}
@@ -26,13 +27,13 @@ def process_matrix(input_path):
             versions = yaml.safe_load(file).get('versions', [])
             for version in versions:
                 matrix['include'].append({
-                    'ee': os.path.basename(input_path),
+                    'ee': ee_name,
                     'version': version.get('name', 'default'),
                     'base_image': version.get('base_image', '')
                 })
     else:
         logger.info("No matrix.yml found. Using default build configuration.")
-        matrix['include'].append({'ee': os.path.basename(input_path), 'version': 'default', 'base_image': ''})
+        matrix['include'].append({'ee': ee_name, 'version': 'default', 'base_image': ''})
 
     logger.info(f"Generated matrix: {json.dumps(matrix, indent=4)}")
     return matrix
