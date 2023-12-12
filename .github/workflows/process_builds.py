@@ -13,12 +13,15 @@ def main():
     for item in matrix['include']:
         version = item['version']
         base_image = item.get('base_image', '')
-        tag_suffix = f"{version}-pr-95-840dbad" if version != "default" else "pr-95-840dbad"
         ee = item['ee']
+        tag_suffix = "pr-95-840dbad"
+
+        image_name = f"{ee}-{version}" if version != "default" else ee
+        full_tag = f"{image_name}:{tag_suffix}"
 
         # Build command
         build_args = ['ansible-builder', 'build', '-v', '3', '--context=../' + ee,
-                      '--tag=' + ee + ':' + tag_suffix]
+                      '--tag=' + full_tag]
 
         if version != "default":
             build_args += ['--build-arg', f'EE_BASE_IMAGE={base_image}']
@@ -26,9 +29,9 @@ def main():
         run_command(build_args)
 
         # Create artifact file
-        commands_file = f"commands-{ee}-{version}.txt"
+        commands_file = f"commands-{image_name}.txt"
         with open(commands_file, 'w') as file:
-            file.write(f"podman pull ghcr.io/cloin/{ee}:{tag_suffix}\n")
+            file.write(f"podman pull ghcr.io/cloin/{full_tag}\n")
             # Add more info as needed
 
 if __name__ == "__main__":
