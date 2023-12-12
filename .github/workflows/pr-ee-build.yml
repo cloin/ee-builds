@@ -62,6 +62,20 @@ jobs:
           echo "IMAGE_TAG=pr-${{ github.event.number }}-$SHORT_SHA" >> $GITHUB_ENV
           echo "IMAGE_REGISTRY=ghcr.io" >> $GITHUB_ENV
 
+      - name: Login to ghcr
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to registry.redhat.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: registry.redhat.io
+          username: ${{ secrets.REDHAT_SA_USERNAME }}
+          password: ${{ secrets.REDHAT_SA_PASSWORD }}
+
       - name: Process EE Versions and Build Images
         working-directory: ${{ matrix.ee }}
         run: | 
