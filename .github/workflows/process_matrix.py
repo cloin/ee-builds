@@ -46,6 +46,8 @@ def main():
     input_path = sys.argv[1]
     matrix = process_matrix(input_path)
     print(json.dumps(matrix))
+    with open('ee_matrix_output.json', 'w') as outfile:
+        json.dump(matrix, outfile)
 
 if __name__ == "__main__":
     main()
