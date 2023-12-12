@@ -76,6 +76,10 @@ jobs:
           username: ${{ secrets.REDHAT_SA_USERNAME }}
           password: ${{ secrets.REDHAT_SA_PASSWORD }}
 
+      - name: Substitute token for automation hub
+        run: |
+          sed -i "s/my_ah_token/${{ secrets.AH_TOKEN }}/1" ansible.cfg
+
       - name: Process EE Versions and Build Images
         working-directory: ${{ matrix.ee }}
         run: | 
