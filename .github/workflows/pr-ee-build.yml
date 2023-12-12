@@ -63,7 +63,8 @@ jobs:
           echo "IMAGE_REGISTRY=ghcr.io" >> $GITHUB_ENV
 
       - name: Process EE Versions and Build Images
-        run: python .github/workflows/process_builds.py ${{ env.EE }}
+        working-directory: ${{ matrix.ee }}
+        run: python .github/workflows/process_builds.py .
 
 
       # - name: Process EE Versions and Build Images
