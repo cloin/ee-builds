@@ -4,6 +4,7 @@ import os
 import sys
 import logging
 import argparse
+import yaml
 
 def setup_logger(level):
     """Set up the logger with specified logging level."""
@@ -32,6 +33,16 @@ def get_changed_files(start_ref, end_ref, logger):
     logger.debug(f"Command output: {result.stdout}")
     return result.stdout.strip().split('\n')
 
+def read_build_versions(ee_dir, logger):
+    """Read build_versions.yml and return the build versions matrix."""
+    versions_file = os.path.join(ee_dir, "build_versions.yml")
+    if os.path.exists(versions_file):
+        logger.info(f"Found build_versions.yml at: {versions_file}")
+        with open(versions_file, 'r') as file:
+            versions_data = yaml.safe_load(file)
+            return versions_data.get('versions', [])
+    return []
+
 def parse_arguments():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(description="Generate a matrix for GitHub Actions based on changed files.")
@@ -42,32 +53,38 @@ def parse_arguments():
     return parser.parse_args()
 
 def main():
-    """Main function to generate a matrix based on changed directories containing 'execution-environment.yml'."""
     args = parse_arguments()
     log_level = logging.DEBUG if args.log_level == 'DEBUG' else logging.INFO
     logger = setup_logger(log_level)
 
     logger.info(f"Start ref: {args.start_ref}, End ref: {args.end_ref}")
 
-    # determine if end_ref is a commit hash or a branch name
-    if len(args.end_ref) == 40 and all(c in '0123456789abcdef' for c in args.end_ref.lower()):
-        # commit hash
-        end_ref = args.end_ref
-    else:
-        # branch name
-        end_ref = "refs/remotes/origin/" + args.end_ref
+    dirs = {}
 
-    changed_files = get_changed_files(args.start_ref, end_ref, logger)
-    dirs = set()
-
+    changed_files = get_changed_files(args.start_ref, args.end_ref, logger)
+    
     for file in changed_files:
         dir_name = os.path.dirname(file)
         ee_file_path = os.path.join(os.getenv('GITHUB_WORKSPACE', ''), dir_name, "execution-environment.yml")
         if dir_name not in dirs and os.path.isfile(ee_file_path):
             logger.info(f"EE file found: {ee_file_path}")
-            dirs.add(dir_name)
+            versions = read_build_versions(os.path.join(os.getenv('GITHUB_WORKSPACE', ''), dir_name), logger)
+            if versions:
+                dirs[dir_name] = versions
+            else:
+                dirs[dir_name] = [{"version": "", "name": dir_name, "base_image": ""}]
 
-    matrix = {'include': [{'ee': dir_name} for dir_name in dirs]}
+    matrix = {"include": []}
+    for dir_name, versions in dirs.items():
+        for version in versions:
+            matrix_entry = {
+                "ee": dir_name,
+                "version": version["version"],
+                "name": f"{dir_name}-{version['version']}" if version["version"] else dir_name,
+                "base_image": version["base_image"]
+            }
+            matrix["include"].append(matrix_entry)
+
     logger.info(f"Generated matrix: {json.dumps(matrix, indent=4)}")
 
     with open(args.output_path, 'w') as file:
