@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
       fail-fast: false
-    name: Build EE - ${{ matrix.name }}
+    name: ${{ matrix.name }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -100,30 +100,34 @@ jobs:
           --tag=${{ env.EE }}:${{ github.sha }}
 
           # Create artifact file
-          COMMANDS_FILE="commands-${{ env.EE }}.txt"
-          echo "Execution Environment: ${{ env.EE }}" > $COMMANDS_FILE
-          if [ -n "${{ env.BASE_IMAGE }}" ]; then
-            echo "Base Image: ${{ env.BASE_IMAGE }}" >> $COMMANDS_FILE
-          fi
-          echo "\`\`\`" >> $COMMANDS_FILE
+          COMMANDS_FILE="commands-${{ matrix.name }}.txt"
+          echo "" >> $COMMANDS_FILE
+          echo "${{ env.EE }}" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" > $COMMANDS_FILE
           echo "podman pull ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/${{ env.EE }}:${{ env.IMAGE_TAG }}" >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
           echo "<details>" >> $COMMANDS_FILE
           echo "<summary><b>More info...</b></summary>" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "#### Installed collections" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
-          echo "Installed collections:" >> $COMMANDS_FILE
-          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible-galaxy collection list >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible-galaxy collection list  >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
-          echo "Ansible version:" >> $COMMANDS_FILE
-          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible --version >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "#### Ansible version" >> $COMMANDS_FILE
+          echo "" >> $COMMANDS_FILE
+          echo "\`\`\`" >> $COMMANDS_FILE
+          podman run -it ${{ env.EE }}:${{ env.IMAGE_TAG }} ansible --version  >> $COMMANDS_FILE
           echo "\`\`\`" >> $COMMANDS_FILE
           echo "</details>" >> $COMMANDS_FILE
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: commands-${{ matrix.ee }}
-          path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
+          name: commands-${{ matrix.name }}
+          path: ${{ matrix.name }}/commands-${{ matrix.name }}.txt
 
       - name: Push To GHCR
         id: push_to_ghcr
