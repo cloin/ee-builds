@@ -2,7 +2,6 @@
 collections:
   - name: servicenow.itsm
   - name: amazon.aws
-    version: 7.1.0
   - name: awx.awx
   - name: amazon.cloud
   - name: community.aws
