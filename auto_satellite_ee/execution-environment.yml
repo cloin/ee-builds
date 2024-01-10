@@ -29,4 +29,4 @@ additional_build_steps:
   append_final:
     - RUN rm -rf /usr/libexec/platform-python
           && ln -s /usr/bin/python3.9 /usr/libexec/platform-python
-    - LABEL quay.expires-after="45d"
+    # - LABEL quay.expires-after="45d"
