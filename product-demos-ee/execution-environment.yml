@@ -25,5 +25,5 @@ additional_build_steps:
     - RUN rpm -ivh /tmp/openshift-clients.rpm
   prepend_galaxy:
     - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
-  append_final:
-    - LABEL quay.expires-after="45d"
+  # append_final:
+  #   - LABEL quay.expires-after="45d"
