@@ -5,3 +5,4 @@ collections:
   - awx.awx
   - cloin.datadog
   - cloin.prometheus
+  - cloin.toxiproxy
