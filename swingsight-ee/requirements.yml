@@ -6,3 +6,4 @@ collections:
   - cloin.datadog
   - cloin.prometheus
   - cloin.toxiproxy
+  - community.general
