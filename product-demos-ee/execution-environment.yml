@@ -2,7 +2,9 @@
 version: 3
 images:
   base_image:
-    name: 'registry.redhat.io/ansible-automation-platform-22/ee-minimal-rhel8:latest'
+    # The base image should be aligned with the AAP cluster version; https://github.com/rhpds/agnosticv/blob/master/sandboxes-gpte/AAP_PRODUCT_DEMOS/common.yaml#L80
+    # details: https://catalog.redhat.com/software/containers/ansible-automation-platform-24/ee-minimal-rhel8/63a3338544b6f291781716c7?architecture=amd64&image=65585cf817e4f3e5acac320b&container-tabs=overview
+    name: 'registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel8:latest'
 
 dependencies:
   galaxy: requirements.yml
