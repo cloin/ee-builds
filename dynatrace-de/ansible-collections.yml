@@ -5,4 +5,4 @@ collections:
   - name: ansible.utils
     version: 3.0.0
   - name: dynatrace.event_driven_ansible
-    source: https://github.com/Dynatrace/Dynatrace-EventDrivenAnsible
+    source: git+https://github.com/Dynatrace/Dynatrace-EventDrivenAnsible
