@@ -25,3 +25,4 @@ collections:
   - name: trendmicro.deepsec
   - name: vmware.vmware_rest
   - name: vyos.vyos
+  - name: community.general
