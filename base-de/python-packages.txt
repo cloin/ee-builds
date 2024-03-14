@@ -1,3 +1,4 @@
 aiohttp
 aiokafka
 requests
+asyncio-mqtt
