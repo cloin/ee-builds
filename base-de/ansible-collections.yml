@@ -17,3 +17,4 @@ collections:
   - name: cloin.eda
     type: git
     source: https://github.com/cloin/cloin.eda
+  - name: kubealex.eda
