@@ -9,7 +9,7 @@ dependencies:
   python: requirements.txt
 
 additional_build_files:
-   - src: openshift-clients-4.12.0-202308011802.p0.g8669c6d.assembly.stream.el8.x86_64.rpm
+   - src: openshift-clients-4.15.0-202403061609.p0.gd6175eb.assembly.stream.el8.x86_64.rpm
      dest: rpms
    - src: ../ansible.cfg
      dest: configs
