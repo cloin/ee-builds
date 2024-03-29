@@ -8,6 +8,7 @@ netaddr==0.8.0
 paramiko==2.8.1
 passlib
 petname==2.6
+psycopg2-binary==2.9.9
 pywinrm==0.4.1
 requests==2.31.0
 requests-credssp==2.0.0
