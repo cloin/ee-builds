@@ -1,0 +1,15 @@
+---
+collections:
+  - name: ansible.controller
+  - name: ansible.netcommon
+  - name: ansible.network
+  - name: ansible.posix
+  - name: ansible.security
+  - name: ansible.utils
+  - name: cisco.dnac
+  - name: cisco.ios
+  - name: cisco.meraki
+  - name: community.general
+  - name: fedora.linux_system_roles
+  - name: netbox.netbox
+
