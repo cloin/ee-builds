@@ -39,6 +39,40 @@ jobs:
         echo $MATRIX_LENGTH
         echo "::set-output name=length::$MATRIX_LENGTH"
 
+  debug:
+    needs: [prepare-matrix]
+    if: ${{ needs.prepare-matrix.outputs.length != '0' }}
+    runs-on: ubuntu-latest
+    environment: test
+    strategy:
+      matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
+      fail-fast: false
+    steps:
+      - name: Print working directory
+        run: pwd
+
+      - name: List files in the directory
+        run: ls -lah
+
+      - name: List environment variables
+        run: printenv
+
+      - name: Show git branch and commit
+        run: |
+          echo "Current Branch:"
+          git branch
+          echo "Current Commit:"
+          git rev-parse HEAD
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: List all remote branches
+        run: git branch -r
+
+      - name: Show detailed git diff
+        run: git diff origin/main
+
   build-ee:
     needs: [prepare-matrix]
     if: ${{ needs.prepare-matrix.outputs.length != '0' }}
