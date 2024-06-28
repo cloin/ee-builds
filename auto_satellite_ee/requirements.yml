@@ -4,14 +4,14 @@ collections:
   - name: ansible.controller
     version: 4.4.8
   - name: infra.controller_configuration
-    version: 2.3.1
+    version: 2.5.2
   # linux
   - name: ansible.posix
     version: 1.5.4
   - name: redhat.insights
-    version: 1.1.0
+    version: 1.2.2
   - name: redhat.rhel_system_roles
-    version: 1.22.0
+    version: 1.23.0
   - name: community.general
     version: 6.3.0
   - name: containers.podman
