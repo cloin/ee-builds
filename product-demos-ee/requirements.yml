@@ -41,6 +41,8 @@ collections:
     version: ">=8.0.0"
   - name: cisco.nxos
     version: ">=7.0.0"
+  - name: infoblox.nios_modules
+    version: ">=1.6.1"
   # openshift
   - name: kubernetes.core
     version: ">=4.0.0"
