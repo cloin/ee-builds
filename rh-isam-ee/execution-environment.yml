@@ -1,0 +1,33 @@
+---
+version: 3
+images:
+  base_image:
+    name: 'registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel8:latest'
+
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
+
+additional_build_files:
+   - src: ../ansible.cfg
+     dest: configs
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+additional_build_steps:
+  prepend_base:
+    - RUN $PYCMD -m pip install --upgrade pip setuptools
+#    - COPY _build/rpms/*.rpm /tmp/openshift-clients.rpm
+#    - RUN $PKGMGR install bash-completion
+    - RUN git clone --branch ee-build-source-aap2-24 https://github.com/redhat-partner-tech/automated-smart-management.git
+          && cp -r automated-smart-management/roles/* /usr/share/ansible/roles/
+          && rm -rf automated-smart-management
+#    - COPY automated-smart-management/roles/* /usr/share/ansible/roles/
+  prepend_galaxy:
+    - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+  append_final:
+    - RUN rm -rf /usr/libexec/platform-python
+          && ln -s /usr/bin/python3.9 /usr/libexec/platform-python
+    # - LABEL quay.expires-after="45d"
+...
