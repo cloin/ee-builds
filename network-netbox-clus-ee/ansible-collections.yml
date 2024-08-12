@@ -12,4 +12,5 @@ collections:
   - name: community.general
   - name: fedora.linux_system_roles
   - name: netbox.netbox
+    version: 3.19.1
 
