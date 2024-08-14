@@ -10,6 +10,11 @@ dependencies:
   python: requirements.txt
   system: bindep.txt
 
+additional_build_files:
+    # Can be used to resolve collections from private automation hub
+    - src: ansible.cfg
+      dest: configs
+
 # additional_build_steps:
 #   append:
 #     - RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/awscliv2.zip"
@@ -17,3 +22,16 @@ dependencies:
 #     - RUN /aws/aws/install
 #     - RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "/session-manager-plugin.rpm"
 #     - RUN dnf install -y /session-manager-plugin.rpm
+
+additional_build_steps:
+    prepend_base:
+        - RUN $PYCMD -m pip install --upgrade pip setuptools
+    prepend_galaxy:
+        # Add custom ansible.cfg which defines collection install sources
+        - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+        # AH_TOKEN is passed into the build command using a --build-arg
+        # accept this as an ARG during this stage to reference later
+        - ARG AH_TOKEN
+        # Use the above ARG to define an environment variable holding
+        # the token for resolving private collections
+        - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN=$AH_TOKEN
