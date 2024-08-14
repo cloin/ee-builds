@@ -1,0 +1,8 @@
+---
+collections:
+  - name: servicenow.itsm
+  - name: awx.awx
+  - name: community.vmware
+  - name: vmware.vmware_rest
+  - name: cloud.vmware_ops
+  - name: vmware.vmware
