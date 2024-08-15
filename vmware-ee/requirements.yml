@@ -1,6 +1,7 @@
 ---
 collections:
   - name: community.general
+  - name: community.aws
   - name: servicenow.itsm
   - name: awx.awx
   - name: community.vmware
