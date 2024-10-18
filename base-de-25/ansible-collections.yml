@@ -1,9 +1,7 @@
 ---
 collections:
   - name: ansible.eda
-    version: 1.4.3
-  # - name: cloin.eda
-  #   version: 2.1.16
+    version: 2.2.0
   - name: cloin.datadog
     version: 1.0.5
   - name: cloin.prometheus
