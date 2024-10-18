@@ -1,4 +1,4 @@
 aiohttp
-aiokafka==0.11.0
-requests==2.32.3
-aiomqtt==2.3.0
+aiokafka
+requests
+aiomqtt
