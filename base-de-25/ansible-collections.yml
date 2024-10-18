@@ -13,5 +13,5 @@ collections:
   - name: crowdstrike.falcon
     version: 4.2.0
   - name: cloin.eda
-    version: 2.1.22
+    version: 2.1.23
   - name: kubealex.eda
