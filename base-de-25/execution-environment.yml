@@ -21,7 +21,7 @@ additional_build_steps:
     prepend_base:
         - RUN $PYCMD -m pip install --upgrade pip setuptools
         - RUN rpm -qa | grep -i typing
-        - RUN microdnf remove -y python3-typing-extensions || true
+        - RUN microdnf remove -y python3.11-typing-extensions || true
     prepend_galaxy:
         # Add custom ansible.cfg which defines collection install sources
         - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
