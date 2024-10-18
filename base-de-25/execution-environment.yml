@@ -21,6 +21,7 @@ additional_build_steps:
     prepend_base:
         - RUN $PYCMD -m pip install --upgrade pip setuptools
         - RUN $PYCMD -m pip install --upgrade --ignore-installed typing-extensions
+        - RUN $PYCMD -m pip install --ignore-installed aiohttp==3.8.5
     prepend_galaxy:
         # Add custom ansible.cfg which defines collection install sources
         - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
