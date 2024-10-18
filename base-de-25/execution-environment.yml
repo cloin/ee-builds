@@ -20,7 +20,7 @@ options:
 additional_build_steps:
     prepend_base:
         - RUN $PYCMD -m pip install --upgrade pip setuptools
-        - RRUN $PYCMD -m pip install --upgrade --ignore-installed typing-extensions
+        - RUN $PYCMD -m pip install --upgrade --ignore-installed typing-extensions
     prepend_galaxy:
         # Add custom ansible.cfg which defines collection install sources
         - ADD _build/configs/ansible.cfg /etc/ansible/ansible.cfg
