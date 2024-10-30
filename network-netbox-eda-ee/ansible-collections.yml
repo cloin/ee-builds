@@ -1,0 +1,11 @@
+---
+collections:
+  - name: cisco.dnac
+  - name: cisco.meraki
+  - name: community.general
+  - name: fedora.linux_system_roles
+  - name: netbox.netbox
+    version: 3.20.0
+
+
+
