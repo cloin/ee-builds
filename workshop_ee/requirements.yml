@@ -1,14 +1,17 @@
 ---
 collections:
-  - name: awx.awx
-  - name: redhat_cop.controller_configuration
-  - name: redhat_cop.tower_utilities
+  - name: ansible.controller
+    version: ">=4.6.2"
+  - name: ansible.platform
+    version: ">=2.5.3"
+  - name: https://github.com/redhat-cop/infra.aap_configuration
+    type: git
+    version: devel
   - name: redhat.rhel_system_roles
   - name: community.aws
   - name: community.general
   - name: community.mysql
   - name: containers.podman
-  - name: infra.controller_configuration
   - name: community.crypto
   - name: chocolatey.chocolatey
   - name: community.windows
