@@ -6,7 +6,7 @@ collections:
     version: ">=2.5.3"
   - name: https://github.com/redhat-cop/infra.aap_configuration
     type: git
-    version: main
+    version: devel
   - name: redhat.rhel_system_roles
   - name: community.aws
   - name: community.general
