@@ -1,3 +1,4 @@
 pysnow
 requests
 netaddr
+boto3
