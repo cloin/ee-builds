@@ -1,6 +1,6 @@
 unzip
 dnf
-systemd-devel [platform:rpm]
-python3.11-devel [platform:rpm]
-pkgconf-pkg-config [platform:rpm]
-gcc [platform:rpm]
+systemd-devel [compile platform:rhel-8]
+python3.11-devel [compile platform:rhel-8]
+pkgconf-pkg-config [compile platform:rhel-8]
+gcc [compile platform:rhel-8]
