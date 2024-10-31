@@ -8,4 +8,3 @@ netaddr
 # - tests/integration/targets/setup_botocore_pip
 botocore>=1.31.0
 boto3>=1.28.0
-pytz
