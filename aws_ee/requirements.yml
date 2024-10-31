@@ -2,7 +2,6 @@
 collections:
   - name: servicenow.itsm
   - name: amazon.aws
-  - name: ansible.controller
   - name: ansible.posix
   - name: awx.awx
   - name: amazon.cloud
