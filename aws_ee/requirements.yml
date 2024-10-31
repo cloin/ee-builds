@@ -9,4 +9,3 @@ collections:
   - name: amazon.cloud
   - name: community.aws
   - name: cloud.terraform
-    version: 1.0.0
