@@ -1,2 +1,3 @@
 unzip
 dnf
+systemd-devel [compile platform:rhel-8]
