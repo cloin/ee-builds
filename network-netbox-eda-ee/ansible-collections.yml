@@ -1,11 +1,42 @@
 ---
 collections:
-  - name: cisco.dnac
-  - name: cisco.meraki
-  - name: community.general
-  - name: fedora.linux_system_roles
+#  - name: ansible.controller              
+#    version: ">=4.6.1"
+#  - name: ansible.eda                     
+#    version: ">=2.1.0"
+  - name: ansible.netcommon               
+    version: 7.1.0
+  - name: ansible.network                 
+    version: 4.0.0
+#  - name: ansible.posix                   
+#    version: 1.5.4
+#  - name: ansible.scm                     
+#    version: 3.0.0
+#  - name: ansible.security                
+#    version: 3.0.0
+#  - name: ansible.snmp                    
+#    version: 3.0.0
+#  - name: ansible.utils                   
+#    version: 5.1.2
+#  - name: ansible.yang                    
+#    version: 3.0.0
+  - name: arista.eos                      
+    version: 10.0.0
+#  - name: cisco.asa                       
+#    version: 6.0.0
+  - name: cisco.ios
+    version: 9.0.2
+  - name: cisco.iosxr                     
+    version: 10.1.0
+#  - name: cisco.nxos                      
+#    version: 9.2.1
+#  - name: cisco.dnac
+#  - name: cisco.meraki
+#  - name: redhat.rhel_system_roles
+#    version: 1.21.1
+#  - name: servicenow.itsm                 
+#    version: 2.6.3
+#  - name: community.general
   - name: netbox.netbox
     version: 3.20.0
-
-
 
