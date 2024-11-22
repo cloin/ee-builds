@@ -1,5 +1,7 @@
 ---
 collections:
+
+## certified collections matching aap25/ee-supported-rhel9
   - name: ansible.netcommon               
     version: 7.1.0
   - name: ansible.network                 
@@ -20,15 +22,22 @@ collections:
     version: 10.0.0
   - name: cisco.ios
     version: 9.0.2
+  - name: junipernetworks.junos
+    version: 9.1.0
+
+## certified or galaxy netbox
+  - name: netbox.netbox
+    version: 3.20.0
+
+## community collections
   - name: community.general
   - name: network.toolkit
-  - name: junipernetworks.junos
-#  - name: netbox.netbox
-#    version: 3.20.0
-  - name: https://github.com/netbox-community/ansible_modules.git
-    version: devel
-    type: git
 
+## disabled collections, due to conflict or unneeded
+## alt netbox source for devel branch
+#  - name: https://github.com/netbox-community/ansible_modules.git
+#    version: devel
+#    type: git
 #  - name: ansible.controller              
 #    version: ">=4.6.1"
 #  - name: ansible.eda                     
