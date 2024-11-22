@@ -21,6 +21,8 @@ collections:
   - name: cisco.ios
     version: 9.0.2
   - name: community.general
+  - name: network.toolkit
+  - name: junipernetworks.junos
 #  - name: netbox.netbox
 #    version: 3.20.0
   - name: https://github.com/netbox-community/ansible_modules.git
