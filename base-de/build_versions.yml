@@ -1,0 +1,6 @@
+---
+versions:
+  - version: '22-rhel8'
+    base_image: 'registry.redhat.io/ansible-automation-platform-22/ee-minimal-rhel8:latest'
+  - version: '24-rhel8'
+    base_image: 'registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel8:latest'
