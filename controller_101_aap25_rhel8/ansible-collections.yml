@@ -1,0 +1,11 @@
+---
+collections:
+
+## certified collections matching aap25/ee-supported-rhel8
+  - name: ansible.posix                   
+  - name: ansible.scm                     
+  - name: ansible.snmp                    
+  - name: ansible.utils                   
+  - name: ansible.yang                    
+  - name: ansible.controller
+  - name: ansible.platform
