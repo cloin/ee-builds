@@ -1,5 +1,5 @@
-# aws_ee
-definition file for aws_ee
+# terraform_ee
+definition file for terraform_ee
 
 ## Requirements:
 
