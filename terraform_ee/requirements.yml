@@ -1,9 +1,12 @@
 ---
 collections:
   - name: amazon.aws
-  - name: awx.awx
   - name: amazon.cloud
   - name: community.aws
+  - name: ansible.controller
+  - name: ansible.platform
+  - name: ansible.posix
+  - name: awx.awx
   - name: cloud.terraform
     version: 3.0.0
   - name: google.cloud
