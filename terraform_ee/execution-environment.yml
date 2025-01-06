@@ -22,7 +22,7 @@ additional_build_steps:
     # Use the above ARG to define an environment variable holding
     # the token for resolving private collections
     - ENV ANSIBLE_GALAXY_SERVER_AUTOMATION_HUB_TOKEN=$AH_TOKEN
-  append:
+  append_base:
     - RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/awscliv2.zip"
     - RUN unzip /awscliv2.zip -d /aws
     - RUN /aws/aws/install
