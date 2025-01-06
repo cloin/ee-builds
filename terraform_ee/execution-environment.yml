@@ -8,6 +8,10 @@ dependencies:
   galaxy: requirements.yml
   python: requirements.txt
   system: bindep.txt
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
 
 additional_build_files:
   # Can be used to resolve collections from private automation hub
@@ -33,8 +37,6 @@ additional_build_steps:
     - RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/awscliv2.zip"
     - RUN unzip /awscliv2.zip -d /aws
     - RUN /aws/aws/install
-    # - RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "/session-manager-plugin.rpm"
-    - RUN yum install -y git
     - RUN curl "https://releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_linux_386.zip" -o "/terraform.zip"
     - RUN unzip /terraform.zip -d /terraform
     - RUN mv /terraform/terraform /bin
