@@ -1,5 +1,5 @@
-# aws_ee
-definition file for aws_ee
+# terraform_ee
+definition file for terraform_ee
 
 ## Requirements:
 
@@ -19,7 +19,7 @@ To build->
 
 ```
 $ podman login quay.io
-Username: seanc@redhat.com
+Username: user@example.com
 Password:
 Login Succeeded!
 $
@@ -32,7 +32,7 @@ localhost/ansible-execution-env                                                 
 <none>                                                                             <none>      b1b66b45526c  13 minutes ago  945 MB
 <none>                                                                             <none>      e32d30b2f115  16 minutes ago  938 MB
 quay.io/ansible/ansible-builder                                                    latest      8e8cbed25d34  22 hours ago    538 MB
-registry.redhat.io/ansible-automation-platform-20-early-access/ee-supported-rhel8  2.0.0       85ca2003a842  2 months ago    920 MB
+registry.redhat.io/ansible-automation-platform-25/ee-supported-rhel8  latest       85ca2003a842  2 months ago    920 MB
 ````
 
 Make sure you have the destination made on your registry... and that you have write access or you will get an error.  For example on quay I needed to make this public because my hosting plan did not let me have a private registry, so it failed.
