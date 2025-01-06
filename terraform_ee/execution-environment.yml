@@ -13,6 +13,7 @@ additional_build_files:
   # Can be used to resolve collections from private automation hub
   - src: ansible.cfg
     dest: configs
+
 options:
   package_manager_path: /usr/bin/microdnf
     
