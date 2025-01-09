@@ -25,3 +25,7 @@ collections:
   - name: trendmicro.deepsec
   - name: vmware.vmware_rest
   - name: vyos.vyos
+  - name: ansible.controller
+    version: ">=4.6.2"
+  - name: ansible.platform
+    version: ">=2.5.3"
