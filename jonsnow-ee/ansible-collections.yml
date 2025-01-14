@@ -1,0 +1,11 @@
+---
+collections:
+  - ansible.controller
+  - community.general
+  - ansible.utils
+  - ansible.posix
+  - awx.awx
+  - ansible.netcommon
+  - name: servicenow.itsm
+    version: 2.2.0
+  - name: kubealex.eda
