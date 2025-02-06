@@ -1,7 +1,7 @@
 name: Devel EE Build
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - main
     types: [opened, reopened, synchronize]
@@ -83,6 +83,7 @@ jobs:
     strategy:
       matrix: ${{fromJson(needs.prepare-matrix.outputs.matrix)}}
       fail-fast: false
+    name: ${{ matrix.name }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -94,7 +95,8 @@ jobs:
 
       - name: Define environment variables
         run: |
-          echo "EE=${{ matrix.ee }}" >> $GITHUB_ENV
+          echo "EE=${{ matrix.name }}" >> $GITHUB_ENV
+          echo "BASE_IMAGE=${{ matrix.base_image }}" >> $GITHUB_ENV
           SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           echo "IMAGE_TAG=pr-${{ github.event.number }}-$SHORT_SHA" >> $GITHUB_ENV
           echo "IMAGE_REGISTRY=ghcr.io" >> $GITHUB_ENV
@@ -120,14 +122,19 @@ jobs:
       - name: Build image and create artifact
         working-directory: ${{ matrix.ee }}
         run: |
-          ansible-builder build -v 3 \
+          BUILD_ARGS=""
+          if [ -n "${{ env.BASE_IMAGE }}" ]; then
+            BUILD_ARGS="--build-arg EE_BASE_IMAGE=${{ env.BASE_IMAGE }}"
+          fi
+
+          ansible-builder build -v 3 $BUILD_ARGS \
           --build-arg AH_TOKEN=${{ secrets.AH_TOKEN }} \
-          --context=../${{ env.EE }} \
+          --context=../${{ matrix.ee }} \
           --tag=${{ env.EE }}:${{ env.IMAGE_TAG }} \
           --tag=${{ env.EE }}:${{ github.sha }}
 
           # Create artifact file
-          COMMANDS_FILE="commands-${{ matrix.ee }}.txt"
+          COMMANDS_FILE="commands-${{ matrix.name }}.txt"
           echo "" >> $COMMANDS_FILE
           echo "${{ env.EE }}" >> $COMMANDS_FILE
           echo "" >> $COMMANDS_FILE
@@ -153,8 +160,8 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: commands-${{ matrix.ee }}
-          path: ${{ matrix.ee }}/commands-${{ matrix.ee }}.txt
+          name: commands-${{ matrix.name }}
+          path: ${{ matrix.name }}/commands-${{ matrix.name }}.txt
 
       - name: Push To GHCR
         id: push_to_ghcr
